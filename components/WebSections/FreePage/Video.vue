@@ -14,8 +14,7 @@
         <p class="section-text">
           SEO is crucial for e-commerce growth. Our free guide covers the
           powerful strategies we use to achieve superior results. Download it
-          now to see how we give our clients a competitive edge—or get started
-          with your custom store today!
+          now to see how we give our clients a competitive edge
         </p>
 
         <div class="button-container">
@@ -34,7 +33,7 @@
             >
               Download HARTECHO SEO Guide
             </a>
-            <img src="/Download.svg" alt="" />
+            <img src="/Graphics/Download.svg" alt="" />
           </div>
         </div>
       </div>

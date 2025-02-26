@@ -14,21 +14,21 @@
       <NavFooterPreloadWhiteBGNav
         :navPaths="paths1"
         @toggleMobileNav="showMobileNav = !showMobileNav"
-        navBarsButtonPath="NavBars.svg"
+        navBarsButtonPath="Graphics/NavBars.svg"
       />
     </template>
     <template v-else>
       <NavFooterPreloadBasicNav
         :navPaths="paths1"
         @toggleMobileNav="showMobileNav = !showMobileNav"
-        navBarsButtonPath="NavBars.svg"
+        navBarsButtonPath="Graphics/NavBars.svg"
       />
     </template>
 
     <NavFooterPreloadBlackBGMobileNav
       :navPaths="paths1"
       @toggleMobileNav="showMobileNav = !showMobileNav"
-      exImg="X.svg"
+      exImg="Graphics/X.svg"
       :class="{ 'nav-slide-out': !showMobileNav }"
     />
 
@@ -73,7 +73,7 @@ watch(showMobileNav, (value) => {
 <style scoped media="screen">
 #app {
   scroll-behavior: smooth;
-  background-color: #fff;
+  background-color: #000;
   font-family: "Roboto", sans-serif;
   position: static;
 }

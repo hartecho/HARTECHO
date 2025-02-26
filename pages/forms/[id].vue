@@ -229,6 +229,11 @@ function toggleAnswer(answer) {
   }
 }
 
+const isLocalhost = () =>
+  process.client &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
 /**
  * Validate input, store it, optionally submit in background if not final,
  * or fully submit if it's the last question.
@@ -237,8 +242,17 @@ async function validateAndNext() {
   if (loading.value) return; // Avoid double click on final step
   if (!runLocalValidations()) return; // If invalid, show error and stop
 
+  const { $fbq } = useNuxtApp(); // Access fbq
+
   // Store the current question's response in formResponses
   storeCurrentAnswer();
+
+  // Track step completion for every question
+  if (!isLocalhost()) {
+    $fbq("trackCustom", "FormStepCompleted", {
+      step: currentQuestionIndex.value + 1,
+    });
+  }
 
   // Check if this is the last question
   const isLastQuestion =
@@ -249,6 +263,10 @@ async function validateAndNext() {
     loading.value = true;
     try {
       await submitResponses("Completed");
+      // Track final submission as a Lead event
+      if (!isLocalhost()) {
+        $fbq("track", "Lead", { content_name: "Form Submission" });
+      }
       nextQuestion(); // triggers the final redirect
     } catch (error) {
       console.error("Final submission error:", error);

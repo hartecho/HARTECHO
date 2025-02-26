@@ -14,7 +14,8 @@ export default defineNuxtConfig({
     // Portfolio Item page generated on demand once until next deployment, cached on CDN
     '/portfolioItem/**': { ssr: true },
     '/forms': { ssr: true},
-    '/forms/**': { ssr: true}
+    '/forms/**': { ssr: true},
+    '/formResponses/**': { ssr: true },
   },
   devtools: { enabled: true },
   app: {

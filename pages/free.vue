@@ -88,7 +88,7 @@ emit("hide-loading");
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: url("/DarkBG3.png") no-repeat center center fixed;
+  background: url("/Backgrounds/freePageBG.webp") no-repeat center center fixed;
   background-size: cover;
   width: 100%;
   min-height: 100vh;
