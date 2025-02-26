@@ -36,10 +36,10 @@ export default defineNuxtConfig({
     display: 'swap'
   },
   nitro: {
-    prerender: {
-      routes: ['/'],
-      crawlLinks: true, // Automatically discover links to prerender
-    },
+    // prerender: {
+    //   routes: ['/'],
+    //   crawlLinks: false, // Automatically discover links to prerender
+    // },
     compressPublicAssets: true, // This enables compression for public assets
   },
   ignore: process.env.NODE_ENV === 'production' 
