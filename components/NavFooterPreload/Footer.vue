@@ -1,6 +1,5 @@
 <template>
   <footer class="office-footer">
-    <!-- Top black bar with links -->
     <nav class="top-nav">
       <div class="nav-buttons">
         <NuxtLink to="/terms">Terms of Service</NuxtLink>
