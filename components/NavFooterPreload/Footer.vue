@@ -18,20 +18,29 @@
         <div class="signup-offer">
           <h2>Sign up for exclusive offers</h2>
           <p>Our best deals for our most loyal customers</p>
-          <input
-            type="email"
-            placeholder="Enter your email"
-            aria-label="Email for exclusive offers"
-          />
+          <form @submit.prevent="handleEmailSubmit">
+            <input
+              v-model="email"
+              type="email"
+              placeholder="Enter your email"
+              aria-label="Email for exclusive offers"
+            />
+          </form>
         </div>
 
         <div class="more-resources">
           <h2>More Resources</h2>
           <ul>
             <li><NuxtLink to="/calc">Revenue Growth Calculator</NuxtLink></li>
-            <li><NuxtLink to="/free">Free SEO Guide</NuxtLink></li>
             <li>
-              <NuxtLink to="/forms/67661cba3a14e729ae1777a1"
+              <NuxtLink to="/free" @click="handleFreeSEOGuideClick"
+                >Free SEO Guide</NuxtLink
+              >
+            </li>
+            <li>
+              <NuxtLink
+                to="/forms/67661cba3a14e729ae1777a1"
+                @click="handleBookCallClick"
                 >Book a Call</NuxtLink
               >
             </li>
@@ -48,8 +57,48 @@
 </template>
 
 <script setup>
-// Composition API (script setup) for Nuxt 3:
-// Add any reactive logic here, if needed.
+import { useNuxtApp } from "#app";
+
+// Reactive email input
+const email = ref("");
+
+// Check if running on localhost to exclude tracking
+const isLocalhost = () =>
+  process.client &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+// Function to handle "Free SEO Guide" click with pixel tracking
+const handleFreeSEOGuideClick = (event) => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("track", "Lead", { content_name: "Free SEO Guide" });
+  }
+  // Navigation happens automatically via NuxtLink
+};
+
+// Function to handle "Book a Call" click with pixel tracking
+const handleBookCallClick = (event) => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("track", "Lead", { content_name: "Book a Call" });
+  }
+  // Navigation happens automatically via NuxtLink
+};
+
+// Function to handle email submission with pixel tracking
+const handleEmailSubmit = () => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost() && email.value) {
+    $fbq("track", "Lead", {
+      content_name: "Exclusive Offers Signup",
+      email: email.value,
+    });
+    // Add your email submission logic here (e.g., API call)
+    console.log("Email submitted:", email.value); // Placeholder
+    email.value = ""; // Reset input
+  }
+};
 </script>
 
 <style scoped>

@@ -1,23 +1,45 @@
 <template>
   <div class="cta-sidebar" :class="{ large: isLarge, small: !isLarge }">
     <h2>
-      Subscribe to our marketing services with a
-      <u>60-day satisfaction guarantee</u>.
+      Boost your eCommerce success with a
+      <u>custom-coded store</u>.
     </h2>
     <div class="cta-content">
       <p class="cta-text">
-        Get a fully optimized, custom-built website—completely free with any
-        subscription. Enjoy unlimited edits and keep your site free for as long
-        as you’re subscribed.
+        Get a high-performance, tailor-made eCommerce store designed for speed,
+        SEO, and unbeatable conversions. Say goodbye to template limitations and
+        hello to a store that grows with your business.
       </p>
-      <NuxtLink to="/pricing" class="cta-button">Get Started!</NuxtLink>
+      <NuxtLink
+        to="/forms/67661cba3a14e729ae1777a1"
+        class="cta-button"
+        @click="handleGetNewStore"
+        >Get My New Store</NuxtLink
+      >
     </div>
   </div>
 </template>
-  
-  <script setup>
+
+<script setup>
+import { useNuxtApp } from "#app";
+
 const lastScrollTop = ref(0);
 const isLarge = ref(true);
+
+// Check if running on localhost to exclude tracking
+const isLocalhost = () =>
+  process.client &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+// Function to handle "Get My New Store" click with pixel tracking
+const handleGetNewStore = (event) => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("track", "Lead", { content_name: "Get My New Store" });
+  }
+  // Navigation happens automatically via NuxtLink
+};
 
 const handleScroll = () => {
   const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -35,8 +57,8 @@ onMounted(() => {
   window.addEventListener("scroll", handleScroll);
 });
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .cta-sidebar {
   flex: 1;
   position: -webkit-sticky;
@@ -76,35 +98,24 @@ onMounted(() => {
   margin-bottom: 1rem;
 }
 
-.benefits {
-  font-size: 1rem;
-  color: #666;
-  margin-bottom: 1.5rem;
-  font-family: "Merriweather", serif;
-  text-align: left;
-}
-
-.benefits ul {
-  list-style-type: disc;
-  margin-left: 20px;
-}
-
 .cta-button {
   display: inline-block;
-  background-color: #005ba0;
+  background-color: #0072a3; /* Matches other components */
   color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
-  font-size: 0.9rem;
-  font-weight: bold;
+  padding: 10px; /* Matches other components */
+  font-family: "Source Sans Pro", sans-serif; /* Matches other components */
+  font-size: 1.1rem; /* Matches other components */
+  font-weight: bold; /* Matches other components */
   text-decoration: none;
-  transition: background-color 0.3s ease-in-out;
-  width: 10rem;
+  transition: all 0.1s; /* Matches other components */
+  width: 200px; /* Matches other components */
   text-align: center;
+  border: none; /* Matches other components */
+  border-radius: 0; /* Matches other components */
 }
 
 .cta-button:hover {
-  background-color: #01c5ee;
+  background-color: #004280; /* Matches other components */
 }
 
 @media (max-width: 768px) {
@@ -113,4 +124,3 @@ onMounted(() => {
   }
 }
 </style>
-  

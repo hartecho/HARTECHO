@@ -16,7 +16,7 @@
         <div class="icon">
           <img src="/Graphics/lightningLight.svg" alt="Development Icon" />
         </div>
-        <h2>Fast Development</h2>
+        <h2>Lightning-Fast Development</h2>
         <p>
           Our team plans, builds, tests, and launches most stores in just 45
           days after consultation.
@@ -38,7 +38,7 @@
         <div class="icon">
           <img src="/Graphics/infinityLight.svg" alt="Flexibility Icon" />
         </div>
-        <h2>Full Flexibility</h2>
+        <h2>Infinite Flexibility</h2>
         <p>
           We’ll build your store exactly how you want it, making sure every
           detail matches your vision.

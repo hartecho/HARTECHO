@@ -6,24 +6,24 @@
     </section>
 
     <!-- Informational Section 1 -->
-    <section class="info-one">
+    <!-- <section class="info-one">
       <WebSectionsFreePageLongBanner />
-    </section>
+    </section> -->
 
     <!-- Informational Section 2 -->
-    <section class="info-section info-two">
+    <!-- <section class="info-section info-two">
       <WebSectionsFreePagePerformance />
-    </section>
+    </section> -->
 
     <!-- Informational Section 3 -->
-    <section class="info-section2 info-three">
+    <!-- <section class="info-section2 info-three">
       <WebSectionsFreepageSuccess />
-    </section>
+    </section> -->
 
     <!-- Quote Form Section -->
-    <section class="quote-form-section">
+    <!-- <section class="quote-form-section">
       <WebSectionsQuoteForm />
-    </section>
+    </section> -->
   </div>
 </template>
   
@@ -106,7 +106,9 @@ section {
 /* Video Section */
 .video-section {
   text-align: center;
-  padding: 150px 2rem 150px 2rem;
+  padding: 150px 2rem 250px 2rem;
+  height: 100vh;
+  display: flex;
 }
 
 .info-section {

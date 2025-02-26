@@ -70,7 +70,7 @@
       <div class="blog-content-wrapper" v-if="selectedBlog">
         <div class="blog-post">
           <div class="left">
-            <!-- Inlined Image Wrapper (always rendered) -->
+            <!-- Inlined Image Wrapper -->
             <div class="img-wrapper">
               <NuxtImg
                 :src="blogImageWrapperResolvedImgPath(selectedBlog.image)"
@@ -82,7 +82,7 @@
                 @load="blogImageWrapperOnImageLoad"
                 :class="{ 'image-loaded': blogImageWrapperImageLoaded }"
               />
-              <!-- Always show image edit field -->
+              <!-- Always visible image edit field -->
               <div class="image-edit-field">
                 <label>Image Path:</label>
                 <span
@@ -289,7 +289,6 @@
                                   {{ item.description }}
                                 </p>
                               </div>
-                              <!-- List item extra controls (absolutely positioned) -->
                               <div
                                 class="list-item-controls"
                                 v-if="
@@ -482,7 +481,7 @@
                         <button @click="hideAddDropdown">Cancel</button>
                       </div>
                     </div>
-                    <!-- "Add Content" Button at End of Section (opens same dropdown) -->
+                    <!-- "Add Content" Button at End of Section -->
                     <button
                       class="add-end-button"
                       @click="addContentItem(sIndex)"
@@ -866,7 +865,6 @@ const removeContentItem = (sIndex, cIndex) => {
   selectedBlog.value.sections[sIndex].content.splice(cIndex, 1);
   markDirty();
 };
-// "Add Content" button at end of section triggers same dropdown as inline add button
 const addContentItem = (sIndex) => {
   const section = selectedBlog.value.sections[sIndex];
   if (section.content.length === 0) {
@@ -976,7 +974,7 @@ const moveSectionDown = (sIndex) => {
   }
 };
 
-// --- Reordering Functions for Content Items ---
+// --- Reordering for Content Items ---
 const moveContentUp = (sIndex, cIndex) => {
   const contents = selectedBlog.value.sections[sIndex].content;
   if (cIndex > 0) {
@@ -1035,7 +1033,6 @@ const removeListItem = (sIndex, cIndex, iIndex) => {
   markDirty();
 };
 const addListItemAfter = (sIndex, cIndex, iIndex, type) => {
-  // For simplicity, add a text list item.
   const newItem = { title: "New Item", description: "New description" };
   selectedBlog.value.sections[sIndex].content[cIndex].list.items.splice(
     iIndex + 1,
@@ -1313,6 +1310,10 @@ const createNewBlog = async () => {
   transform: scale(1);
 }
 .image-edit-field {
+  position: relative;
+  z-index: 2;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 0.5rem;
   margin-top: 0.5rem;
   font-size: 0.9rem;
   color: #666;
@@ -1461,7 +1462,7 @@ p {
   background: #f0f0f0;
 }
 
-/* List Section (restored styling) */
+/* List Section - Restore styling */
 .list-section {
   background: #f0f8ff;
   padding: 1rem;
@@ -1479,11 +1480,14 @@ p {
 .list-section ul li {
   margin-bottom: 0.75rem;
   position: relative;
+  padding-right: 3rem; /* Leave room for controls */
+  z-index: 1;
 }
 .list-item-controls {
   position: absolute;
   top: 0;
   right: 0;
+  z-index: 2;
   display: flex;
   gap: 0.25rem;
   background: rgba(255, 255, 255, 0.9);
@@ -1583,6 +1587,7 @@ p {
 }
 .comment-url:hover {
   color: #01c5ee;
+  text-decoration: none;
 }
 .no-comments {
   font-size: 1rem;
@@ -1670,6 +1675,26 @@ p {
   margin-top: 0.5rem;
   padding: 0.5rem 1rem;
 }
+
+/* Modern Save Button Styling */
+.save-button {
+  background: linear-gradient(to right, #4caf50, #45a049);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: background 0.3s ease-in-out;
+}
+.save-button:hover {
+  background: linear-gradient(to right, #45a049, #4caf50);
+}
+
+/* Unsaved Changes Indicator */
 .unsaved-indicator {
   margin-top: 1rem;
   color: #dc3545;

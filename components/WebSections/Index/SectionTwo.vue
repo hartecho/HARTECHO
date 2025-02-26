@@ -18,18 +18,38 @@
           trust and maximize visitor conversions.
         </p>
         <div class="button-group">
-          <NuxtLink to="/forms/67661cba3a14e729ae1777a1" class="btn get-store"
-            >Get My New Store</NuxtLink
+          <NuxtLink
+            to="/forms/67661cba3a14e729ae1777a1"
+            class="btn get-store"
+            @click="handleGetNewStore"
           >
+            Get My New Store
+          </NuxtLink>
         </div>
       </div>
     </section>
   </div>
 </template>
-  
+
 <script setup>
+import { useNuxtApp } from "#app";
+
+// Check if running on localhost to exclude tracking
+const isLocalhost = () =>
+  process.client &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+// Function to handle "Get My New Store" click with pixel tracking
+const handleGetNewStore = (event) => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("track", "Lead", { content_name: "Get My New Store" });
+  }
+  // Navigation happens automatically via NuxtLink
+};
 </script>
-  
+
 <style scoped>
 .canvas-background {
   position: absolute;

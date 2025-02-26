@@ -1,7 +1,3 @@
-<!-- #005ba0 rgb(0,91,160) DarkBlue -->
-<!-- #01c5ee rgb(1, 197, 238) LightBlue -->
-<!-- #ffffff rgb(240, 242, 245) OffWhite -->
-
 <template>
   <div class="home">
     <canvas ref="backgroundCanvas" class="canvas-background"></canvas>
@@ -14,7 +10,10 @@
   </div>
 </template>
   
-  <script setup>
+<script setup>
+import { ref, onMounted, onUnmounted } from "vue";
+import { useRouter, useRoute } from "vue-router";
+
 const backgroundCanvas = ref(null);
 const router = useRouter();
 const route = useRoute();
@@ -23,8 +22,12 @@ function setTab(tab) {
   router.push({ query: { ...route.query, tab } });
 }
 
-// New particle-based canvas code
 let particles = [];
+const targetFPS = 30;
+const msPerFrame = 1000 / targetFPS;
+let lastTime = 0;
+let animationFrameId = null;
+let resetIntervalId = null;
 
 class Particle {
   constructor(canvas) {
@@ -35,19 +38,23 @@ class Particle {
   reset() {
     this.x = Math.random() * this.canvas.width;
     this.y = Math.random() * this.canvas.height;
+    // Radius between 1 and 4
     this.radius = Math.random() * 3 + 1;
-    this.speedX = (Math.random() - 0.5) * 0.5;
-    this.speedY = (Math.random() - 0.5) * 0.5;
+    // Scale speed with size (larger = faster)
+    const speedFactor = 2 + (this.radius - 1) / 3;
+    this.speedX = (Math.random() - 0.5) * 0.5 * speedFactor;
+    this.speedY = (Math.random() - 0.5) * 0.5 * speedFactor;
     const colors = ["#01c5ee", "#005ba0", "#ffffff"];
     this.color = colors[Math.floor(Math.random() * colors.length)];
-    this.alpha = Math.random() * 0.5 + 10;
-    this.blur = Math.random() * 10 + 10;
+    // Larger particles are brighter
+    this.alpha = ((this.radius - 1) / 3) * 0.4 + 0.6;
+    this.blur = Math.random() * 10 + 1;
   }
 
   update() {
     this.x += this.speedX;
     this.y += this.speedY;
-    // Wrap around canvas edges for continuous flow
+    // Wrap around canvas edges
     if (this.x < 0) this.x = this.canvas.width;
     if (this.x > this.canvas.width) this.x = 0;
     if (this.y < 0) this.y = this.canvas.height;
@@ -68,62 +75,92 @@ class Particle {
 }
 
 function initParticles(canvas, count) {
+  // Replace the particle array entirely
   particles = [];
   for (let i = 0; i < count; i++) {
     particles.push(new Particle(canvas));
   }
 }
 
+function resizeCanvas(canvas, ctx) {
+  const dpr = window.devicePixelRatio || 1;
+  const parentWidth = canvas.parentElement.offsetWidth;
+  const parentHeight = canvas.parentElement.offsetHeight;
+  canvas.width = parentWidth * dpr;
+  canvas.height = parentHeight * dpr;
+  canvas.style.width = parentWidth + "px";
+  canvas.style.height = parentHeight + "px";
+  // Reset transform then scale
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.scale(dpr, dpr);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = "high";
+  initParticles(canvas, 150);
+}
+
 onMounted(() => {
   const canvas = backgroundCanvas.value;
   const ctx = canvas.getContext("2d");
 
-  function resizeCanvas() {
-    canvas.width = canvas.parentElement.offsetWidth;
-    canvas.height = canvas.parentElement.offsetHeight;
-    initParticles(canvas, 100); // Set number of particles as desired
-  }
+  function animate(timestamp) {
+    if (document.hidden) {
+      // Skip animation if tab is hidden
+      animationFrameId = requestAnimationFrame(animate);
+      return;
+    }
+    if (!lastTime) lastTime = timestamp;
+    if (timestamp - lastTime < msPerFrame) {
+      animationFrameId = requestAnimationFrame(animate);
+      return;
+    }
+    lastTime = timestamp;
 
-  function animate() {
-    // Fill with a solid black background
+    // Clear the canvas
     ctx.fillStyle = "#000000";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    particles.forEach((particle) => {
-      particle.update();
-      particle.draw(ctx);
+    // Update and draw each particle
+    particles.forEach((p) => {
+      p.update();
+      p.draw(ctx);
     });
 
-    requestAnimationFrame(animate);
+    animationFrameId = requestAnimationFrame(animate);
   }
 
-  window.addEventListener("resize", resizeCanvas);
-  resizeCanvas();
-  animate();
+  function onResize() {
+    resizeCanvas(canvas, ctx);
+  }
 
-  return () => {
-    window.removeEventListener("resize", resizeCanvas);
-  };
+  window.addEventListener("resize", onResize);
+  resizeCanvas(canvas, ctx);
+  animationFrameId = requestAnimationFrame(animate);
+
+  // Periodically reset particles every 2 minutes to clear memory buildup
+  resetIntervalId = setInterval(() => {
+    initParticles(canvas, 150);
+  }, 120000);
+
+  onUnmounted(() => {
+    window.removeEventListener("resize", onResize);
+    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+    if (resetIntervalId) clearInterval(resetIntervalId);
+  });
 });
 
 useSeoMeta({
-  title: "Custom Websites, SEO, Ads, and Branding || HARTECHO",
-  ogTitle: "Custom Websites, SEO, Ads, and Branding  || HARTECHO",
+  title: "Custom-Coded E-Commerce Stores || HARTECHO",
+  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
   description:
-    "HARTECHO is a marketing agency offering custom-built websites, cutting-edge SEO, data-driven ad campaigns, and modern branding solutions. Elevate your business!",
+    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. We optimize for performance, SEO, and conversions to help your online store succeed.",
   ogDescription:
-    "HARTECHO is a marketing agency offering custom-built websites, cutting-edge SEO, data-driven ad campaigns, and modern branding solutions. Elevate your business!",
+    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. We optimize for performance, SEO, and conversions to help your online store succeed.",
   ogImage: "/HARTECHOLogo.webp",
   twitterCard: "/HARTECHOLogo.webp",
 });
 
 useHead({
-  link: [
-    {
-      rel: "canonical",
-      href: `https://www.hartecho.com`,
-    },
-  ],
+  link: [{ rel: "canonical", href: `https://www.hartecho.com` }],
   script: [
     {
       type: "application/ld+json",
@@ -133,7 +170,7 @@ useHead({
         name: "HARTECHO - Custom-Coded E-Commerce Stores",
         url: "https://www.hartecho.com",
         description:
-          "HARTECHO specializes in custom-coded e-commerce stores crafted by software engineers using cutting-edge technologies like Nuxt3. We optimize for speed, SEO, and conversions to help your online store succeed.",
+          "HARTECHO builds high-performance, custom-coded e-commerce websites optimized for speed, SEO, and conversions. Let us help you create a robust online store that grows your business.",
         publisher: {
           "@type": "Organization",
           name: "HARTECHO",
@@ -156,11 +193,8 @@ useHead({
           "@type": "Service",
           name: "Custom-Coded E-Commerce Store Development",
           description:
-            "HARTECHO builds high-performance, SEO-optimized, custom-coded e-commerce stores to maximize your online sales and customer experience, using advanced technologies like Nuxt3.",
-          provider: {
-            "@type": "Organization",
-            name: "HARTECHO",
-          },
+            "HARTECHO builds custom-coded e-commerce websites designed for high performance, exceptional SEO, and increased conversions. Our solutions are tailored to grow your online business.",
+          provider: { "@type": "Organization", name: "HARTECHO" },
           areaServed: "Global",
           serviceType: ["Custom-Coded E-Commerce Stores"],
         },
@@ -170,7 +204,7 @@ useHead({
             target: "https://www.hartecho.com",
             name: "Request HARTECHO E-Commerce Store Services",
             description:
-              "Boost your online sales with HARTECHO's custom-coded e-commerce stores, optimized for speed, SEO, and conversions. Request a consultation today!",
+              "Boost your online sales with HARTECHO's custom-coded e-commerce stores, optimized for performance, SEO, and conversions. Request a consultation today!",
           },
           {
             "@type": "ReadAction",
@@ -188,11 +222,10 @@ useHead({
           "@type": "Thing",
           name: [
             "Custom-Coded E-Commerce Stores",
-            "SEO-Optimized E-Commerce",
             "High-Performance E-Commerce",
-            "Nuxt3 E-Commerce Development",
-            "E-Commerce Speed Optimization",
-            "E-Commerce Conversion Boosting",
+            "SEO-Optimized E-Commerce",
+            "Custom E-Commerce Development",
+            "E-Commerce Conversion Optimization",
           ],
         },
         breadcrumb: {
@@ -221,25 +254,24 @@ const emit = defineEmits(["hide-loading"]);
 emit("hide-loading");
 </script>
   
-  <style scoped>
+<style scoped>
+.home {
+  width: 100%;
+  position: relative;
+  background: transparent;
+  z-index: 0;
+}
+
 .canvas-background {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: -1;
+  z-index: -2;
   pointer-events: none;
 }
-
 .steps {
   margin-top: -12rem;
 }
-
-.home {
-  width: 100%;
-  position: relative;
-  background: transparent;
-}
 </style>
-  

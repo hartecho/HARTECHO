@@ -39,7 +39,13 @@
     <SubcomponentsBookedPopup />
 
     <footer class="footer">
-      <template v-if="route.path.startsWith('/forms')">
+      <template
+        v-if="
+          route.path.startsWith('/forms') ||
+          route.path.startsWith('/free') ||
+          route.path.startsWith('/blog')
+        "
+      >
         <!-- No nav bar for any /forms route -->
       </template>
 

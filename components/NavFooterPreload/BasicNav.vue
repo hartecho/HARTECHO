@@ -17,7 +17,7 @@
                 <NuxtLink :to="getRoute(link)" class="">{{ link.charAt(0).toUpperCase() + link.slice(1) }}</NuxtLink>
             </div>
             <div class="free-btn">
-              <NuxtLink to="/free" class="free-text">Free SEO Guide</NuxtLink>
+              <NuxtLink to="/free" class="free-text" @click="handleFreeSEOGuideClick">Free SEO Guide</NuxtLink>
             </div>
         </div>
       </div>
@@ -38,8 +38,10 @@
       </div>
     </nav>
 </template>
-  
-  <script setup>
+
+<script setup>
+import { useNuxtApp } from "#app";
+
 let navbar = ref(null);
 let lastScrollPosition = ref(0);
 
@@ -53,6 +55,21 @@ let props = defineProps({
   },
   navBarsButtonPath: String,
 });
+
+// Check if running on localhost to exclude tracking
+const isLocalhost = () =>
+  process.client &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+// Function to handle "Free SEO Guide" click with pixel tracking
+const handleFreeSEOGuideClick = (event) => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("track", "Lead", { content_name: "Free SEO Guide" });
+  }
+  // Navigation happens automatically via NuxtLink
+};
 
 function resolvedLogoPath() {
   return "/HARTECHOLogo.webp";
@@ -70,8 +87,8 @@ function getRoute(link) {
   return link === "home" ? "/" : `/${link}`;
 }
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .nav-bar {
   animation: item-load 2s;
   position: absolute;

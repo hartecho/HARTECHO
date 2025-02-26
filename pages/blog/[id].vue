@@ -212,10 +212,6 @@
         </div>
       </div>
     </div>
-
-    <section class="quote-form-section">
-      <WebSectionsQuoteForm backgroundColor="rgba(0,0,0,0.1)" />
-    </section>
   </div>
 </template>
 

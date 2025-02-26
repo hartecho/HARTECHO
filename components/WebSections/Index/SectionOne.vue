@@ -4,7 +4,7 @@
     <section class="speed-section">
       <div class="content-wrapper">
         <div class="tag">Speed</div>
-        <h1 class="title">Why Are My Conversion Rates Declining?</h1>
+        <h1 class="title">Why Are My Conversion Rates So Low?</h1>
         <p class="subtitle">
           Research from Google Analytics shows that 53% of users abandon
           websites that take longer than 3 seconds to load. Template-based
@@ -13,12 +13,20 @@
           conversions.
         </p>
         <div class="button-group">
-          <NuxtLink to="/forms/67661cba3a14e729ae1777a1" class="btn get-store"
-            >Get My New Store</NuxtLink
+          <NuxtLink
+            to="/forms/67661cba3a14e729ae1777a1"
+            class="btn get-store"
+            @click="handleGetNewStore"
           >
-          <NuxtLink to="https://pagespeed.web.dev" class="btn test-speed"
-            >Test My Store Speed</NuxtLink
+            Get My New Store
+          </NuxtLink>
+          <NuxtLink
+            to="https://pagespeed.web.dev"
+            class="btn test-speed"
+            @click="handleTestSpeed"
           >
+            Test My Store Speed
+          </NuxtLink>
         </div>
       </div>
       <div class="image-container">
@@ -27,10 +35,35 @@
     </section>
   </div>
 </template>
-  
+
 <script setup>
+import { useNuxtApp } from "#app";
+
+// Check if running on localhost to exclude tracking
+const isLocalhost = () =>
+  process.client &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+// Function to handle "Get My New Store" click with pixel tracking
+const handleGetNewStore = (event) => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("track", "Lead", { content_name: "Get My New Store" });
+  }
+  // Navigation happens automatically via NuxtLink
+};
+
+// Function to handle "Test My Store Speed" click with pixel tracking
+const handleTestSpeed = (event) => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("trackCustom", "ClickedStoreSpeedCheck");
+  }
+  // Navigation to external URL happens automatically via NuxtLink
+};
 </script>
-  
+
 <style scoped>
 .canvas-background {
   position: absolute;

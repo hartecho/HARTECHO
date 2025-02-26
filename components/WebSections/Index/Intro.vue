@@ -12,22 +12,61 @@
         <img class="logo-icon" src="/HARTECHOLogo.webp" alt="Logo" />
       </div>
       <div class="button-group">
-        <NuxtLink to="/forms/67661cba3a14e729ae1777a1" class="btn get-store"
-          >Get My New Store</NuxtLink
+        <NuxtLink
+          to="/forms/67661cba3a14e729ae1777a1"
+          class="btn get-store"
+          @click="handleGetNewStore"
         >
-        <button class="btn learn-more">See How It Works</button>
+          Get My New Store
+        </NuxtLink>
+        <!-- Add the @click to trigger the scrollDown function and track event -->
+        <button class="btn learn-more" @click="handleSeeHowItWorks">
+          See How It Works
+        </button>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
+import { useNuxtApp } from "#app";
+
+// Check if running on localhost to exclude tracking
+const isLocalhost = () =>
+  process.client &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+// Function to handle "Get My New Store" click with pixel tracking
+const handleGetNewStore = (event) => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("track", "Lead", { content_name: "Get My New Store" });
+  }
+  // Navigation happens automatically via NuxtLink, no need to preventDefault
+};
+
+// Function to handle "See How It Works" click with pixel tracking
+const handleSeeHowItWorks = () => {
+  const { $fbq } = useNuxtApp();
+  if (!isLocalhost()) {
+    $fbq("track", "ViewContent", { content_name: "See How It Works" });
+  }
+  scrollDown(); // Call the scroll function after tracking
+};
+
+// Existing scroll function
+function scrollDown() {
+  window.scrollBy({
+    top: 800, // Scroll 800px down; adjust as needed
+    behavior: "smooth",
+  });
+}
 </script>
 
 <style scoped>
 .intro-section {
   min-height: 110vh;
-  /* background-image: url("/Backgrounds/introBG3.png"); Original background image */
   background-size: cover;
   background-position: bottom;
   display: flex;
@@ -48,7 +87,7 @@
     to bottom,
     rgba(0, 0, 0, 0.5) 0%,
     rgba(0, 0, 0, 1) 90%,
-    rgba(0, 0, 0, 1) 100% /* Fully black at the bottom, smooth fade */
+    rgba(0, 0, 0, 1) 100%
   );
   z-index: 1;
 }
@@ -111,7 +150,7 @@
   font-family: "Source Sans Pro", sans-serif;
   font-size: 1.1rem;
   padding: 10px;
-  width: 200px; /* Ensure identical width for both buttons */
+  width: 200px;
   border: none;
   cursor: pointer;
   font-weight: bold;
@@ -143,7 +182,6 @@
   .title {
     font-size: 2.2rem;
   }
-
   .subtitle {
     font-size: 1rem;
   }
@@ -153,16 +191,13 @@
   .title {
     font-size: 1.8rem;
   }
-
   .subtitle {
     font-size: 0.95rem;
     margin-bottom: 1rem;
   }
-
   .logo-icon {
     width: 100px;
   }
-
   .button-group {
     margin-top: 1rem;
   }
@@ -172,21 +207,16 @@
   .content-wrapper {
     padding: 0;
   }
-
   .title {
     font-size: 1.5rem;
   }
-
   .subtitle {
     font-size: 0.85rem;
   }
-
   .btn {
     font-size: 1rem;
   }
-
   .button-group {
-    /* flex-direction: column; */
     gap: 10px;
   }
 }
