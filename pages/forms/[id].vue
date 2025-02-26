@@ -59,6 +59,38 @@
           />
         </div>
 
+        <!-- First Name -->
+        <div
+          v-else-if="currentQuestion.type === 'first_name'"
+          class="text-answer"
+        >
+          <input
+            type="text"
+            v-model="shortTextAnswer"
+            :placeholder="currentQuestion.placeholder || 'Your first name...'"
+            :class="{ error: hasError }"
+            @input="clearError"
+            @keyup.enter="validateAndNext"
+            class="text-input"
+          />
+        </div>
+
+        <!-- Last Name -->
+        <div
+          v-else-if="currentQuestion.type === 'last_name'"
+          class="text-answer"
+        >
+          <input
+            type="text"
+            v-model="shortTextAnswer"
+            :placeholder="currentQuestion.placeholder || 'Your last name...'"
+            :class="{ error: hasError }"
+            @input="clearError"
+            @keyup.enter="validateAndNext"
+            class="text-input"
+          />
+        </div>
+
         <!-- Email -->
         <div v-else-if="currentQuestion.type === 'email'" class="text-answer">
           <input
@@ -135,37 +167,56 @@
 </template>
 
 <script setup>
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { useRoute, useRouter, onBeforeRouteLeave } from "vue-router";
+
 // Route and Router instances
 const route = useRoute();
 const router = useRouter();
 
-// Reactive references
+// Reactive state
 const currentQuestionIndex = ref(0);
-const formResponses = ref([]); // Local array to store all responses
-const selectedAnswers = ref([]); // For multiple-choice answers
-const shortTextAnswer = ref(""); // For short text, email, and phone inputs
+const formResponses = ref([]); // local array to store all answers
+const selectedAnswers = ref([]); // for multiple-choice answers
+const shortTextAnswer = ref(""); // for text, email, phone, etc.
 const hasError = ref(false);
 const errorMessage = ref("");
-const formResponseId = ref(null); // ID of the created/updated form response
-
-// Loading state for the spinner (only used on final submission)
+const formResponseId = ref(null); // will hold the created record’s ID
 const loading = ref(false);
 
-// Fetch the form data based on the ID from the URL
+// Fetch the form data using the ID from the URL
 const { data: form } = await useFetch(`/api/forms/${route.params.id}`);
 
-// Increase form views on mount
+// Increase view count on mount and load any previous answer
 onMounted(async () => {
-  // Bump the form's view count
   if (form.value) {
     form.value.views += 1;
     await saveForm();
   }
-  // Load previously stored answer (if any) for the first question
   loadPreviousAnswer();
+
+  // Listen for unload events (refresh/close) so that we save partial progress
+  window.addEventListener("beforeunload", handleBeforeUnload);
 });
 
-// Save the form (e.g., update "views")
+// Remove unload listener on unmount
+onBeforeUnmount(() => {
+  window.removeEventListener("beforeunload", handleBeforeUnload);
+});
+
+// Also catch SPA navigation
+onBeforeRouteLeave((to, from, next) => {
+  if (
+    form.value &&
+    currentQuestionIndex.value < form.value.questions.length - 1
+  ) {
+    storeCurrentAnswer();
+    savePartialResponse();
+  }
+  next();
+});
+
+// Save the form (for example, updating view count)
 async function saveForm() {
   try {
     await $fetch(`/api/forms/${form.value._id}`, {
@@ -177,18 +228,87 @@ async function saveForm() {
   }
 }
 
-// Computed: Current question
+useSeoMeta({
+  title: "Custom-Coded E-Commerce Stores || HARTECHO",
+  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
+  description:
+    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Fill out this form so we can better understand your unique e-commerce needs.",
+  ogDescription:
+    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Fill out this form so we can better understand your unique e-commerce needs.",
+  ogImage: "/HARTECHOLogo.webp",
+  twitterCard: "/HARTECHOLogo.webp",
+});
+
+/**
+ * Save the current response progress.
+ * • If no record exists (formResponseId is null), create one using POST.
+ * • Otherwise, update the record using PUT.
+ */
+async function savePartialResponse() {
+  // First, store the latest answer locally.
+  storeCurrentAnswer();
+  const payloadObj = {
+    formId: form.value._id,
+    responses: formResponses.value,
+    responseType: "Abandoned",
+  };
+  const payload = JSON.stringify(payloadObj);
+
+  if (!formResponseId.value) {
+    // No record exists yet, so create one.
+    try {
+      console.log("Creating new form response via POST");
+      const response = await $fetch("/api/formResponses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      });
+      if (response && response._id) {
+        formResponseId.value = response._id;
+        console.log("Form response created with id:", formResponseId.value);
+      }
+    } catch (error) {
+      console.error("Error creating form response:", error);
+    }
+  } else {
+    // Update the existing record using PUT.
+    const updateUrl = `/api/formResponses/${formResponseId.value}`;
+    console.log("Updating form response via PUT at:", updateUrl);
+    try {
+      await $fetch(updateUrl, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      });
+    } catch (error) {
+      console.error("Error updating form response:", error);
+    }
+  }
+}
+
+// Handle beforeunload so that progress is saved if the user leaves
+function handleBeforeUnload(event) {
+  if (
+    form.value &&
+    currentQuestionIndex.value < form.value.questions.length - 1
+  ) {
+    savePartialResponse();
+  }
+  // No need to cancel the unload
+}
+
+// Computed: get the current question
 const currentQuestion = computed(() => {
   return form.value?.questions[currentQuestionIndex.value] || {};
 });
 
-// Progress bar percentage
+// Computed: calculate progress percentage
 const progressPercentage = computed(() => {
   if (!form.value?.questions?.length) return 0;
   return ((currentQuestionIndex.value + 1) / form.value.questions.length) * 100;
 });
 
-// Whether multiple selection is allowed
+// Computed: determine if multiple selection is allowed
 const allowsMultiple = computed(() => {
   return (
     currentQuestion.value.type === "multiple_choice" &&
@@ -196,22 +316,19 @@ const allowsMultiple = computed(() => {
   );
 });
 
-// Check if the answer is valid
+// Computed: validate the current answer
 const isAnswerValid = computed(() => {
-  // If question isn't required, it's automatically valid
   if (!currentQuestion.value?.validations?.required) return true;
 
-  // For multiple choice:
   if (currentQuestion.value.type === "multiple_choice") {
     return allowsMultiple.value
       ? selectedAnswers.value.length > 0
       : selectedAnswers.value.length === 1;
   }
-  // For short_text, email, phone_number:
   return shortTextAnswer.value.trim().length > 0;
 });
 
-// Multiple-choice helpers
+// Helpers for multiple-choice questions
 function isChoiceSelected(choiceLabel) {
   return selectedAnswers.value.includes(choiceLabel);
 }
@@ -224,7 +341,6 @@ function toggleAnswer(answer) {
       selectedAnswers.value.splice(index, 1);
     }
   } else {
-    // Single selection: either select or deselect
     selectedAnswers.value = selectedAnswers.value[0] === answer ? [] : [answer];
   }
 }
@@ -235,39 +351,35 @@ const isLocalhost = () =>
     window.location.hostname === "127.0.0.1");
 
 /**
- * Validate input, store it, optionally submit in background if not final,
- * or fully submit if it's the last question.
+ * Validate the answer and then either submit the final form or save partial progress.
  */
 async function validateAndNext() {
-  if (loading.value) return; // Avoid double click on final step
-  if (!runLocalValidations()) return; // If invalid, show error and stop
+  if (loading.value) return;
+  if (!runLocalValidations()) return;
 
-  const { $fbq } = useNuxtApp(); // Access fbq
-
-  // Store the current question's response in formResponses
+  // Save current answer locally
   storeCurrentAnswer();
 
-  // Track step completion for every question
   if (!isLocalhost()) {
+    const { $fbq } = useNuxtApp();
     $fbq("trackCustom", "FormStepCompleted", {
       step: currentQuestionIndex.value + 1,
     });
   }
 
-  // Check if this is the last question
   const isLastQuestion =
     currentQuestionIndex.value === form.value.questions.length - 1;
 
   if (isLastQuestion) {
-    // Show spinner, do final submission synchronously
+    // Final submission: update with responseType "Completed" and await response.
     loading.value = true;
     try {
       await submitResponses("Completed");
-      // Track final submission as a Lead event
       if (!isLocalhost()) {
+        const { $fbq } = useNuxtApp();
         $fbq("track", "Lead", { content_name: "Form Submission" });
       }
-      nextQuestion(); // triggers the final redirect
+      nextQuestion(); // triggers final redirect
     } catch (error) {
       console.error("Final submission error:", error);
       hasError.value = true;
@@ -277,18 +389,14 @@ async function validateAndNext() {
       loading.value = false;
     }
   } else {
-    // Go to the next question immediately (no spinner)
+    // For intermediate questions, proceed immediately then update partial progress.
     nextQuestion();
-    // Submit partial in background
-    submitResponses("Abandoned").catch((error) => {
-      console.error("Partial submission error:", error);
-    });
+    savePartialResponse();
   }
 }
 
 /**
- * Store the current question's data in `formResponses` so that
- * we can retrieve it if we go back later.
+ * Store the current question’s answer in formResponses.
  */
 function storeCurrentAnswer() {
   const newResponse = {
@@ -296,11 +404,10 @@ function storeCurrentAnswer() {
     questionType: currentQuestion.value.type,
     response:
       currentQuestion.value.type === "multiple_choice"
-        ? [...selectedAnswers.value] // copy array
+        ? [...selectedAnswers.value]
         : shortTextAnswer.value.trim(),
   };
 
-  // If we already have a response for this question, update it; otherwise push.
   const existingIndex = formResponses.value.findIndex(
     (r) => r.questionId === newResponse.questionId
   );
@@ -312,36 +419,47 @@ function storeCurrentAnswer() {
 }
 
 /**
- * Attempt to submit the current formResponses to the server.
- * responseType can be "Abandoned" (partial) or "Completed" (final).
+ * Final submission of responses.
+ * Uses POST if no record exists; otherwise uses PUT.
  */
 async function submitResponses(responseType) {
-  const updatedPayload = {
+  const payloadObj = {
     formId: form.value._id,
     responses: formResponses.value,
     responseType,
   };
+  const payload = JSON.stringify(payloadObj);
 
-  const apiUrl = formResponseId.value
-    ? `/api/formResponses/${formResponseId.value}`
-    : "/api/formResponses";
-  const method = formResponseId.value ? "PUT" : "POST";
-
-  const response = await $fetch(apiUrl, {
-    method,
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(updatedPayload),
-  });
-
-  if (!formResponseId.value && response && response._id) {
-    // Store newly created ID so we can update next time
-    formResponseId.value = response._id;
+  if (!formResponseId.value) {
+    console.log("Final submission: creating new record via POST");
+    try {
+      const response = await $fetch("/api/formResponses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      });
+      if (response && response._id) {
+        formResponseId.value = response._id;
+      }
+    } catch (error) {
+      console.error("Error creating form response on final submit:", error);
+    }
+  } else {
+    const updateUrl = `/api/formResponses/${formResponseId.value}`;
+    console.log("Final submission: updating record via PUT at:", updateUrl);
+    try {
+      await $fetch(updateUrl, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: payload,
+      });
+    } catch (error) {
+      console.error("Error updating form response on final submit:", error);
+    }
   }
 }
 
-// Local validations for email or phone format
+// Local validations (e.g. email or phone format)
 function runLocalValidations() {
   hasError.value = false;
   errorMessage.value = "";
@@ -354,9 +472,7 @@ function runLocalValidations() {
       return false;
     }
   }
-
   if (currentQuestion.value.type === "phone_number") {
-    // Example: basic 10-digit check
     const phoneRegex = /^\d{10}$/;
     if (!phoneRegex.test(shortTextAnswer.value)) {
       hasError.value = true;
@@ -364,49 +480,38 @@ function runLocalValidations() {
       return false;
     }
   }
-
   return true;
 }
 
-// Clears error messages upon user input
+// Clear error messages when input changes
 function clearError() {
   hasError.value = false;
   errorMessage.value = "";
 }
 
-// Move to next question or redirect if final
+// Move to the next question or complete the form
 function nextQuestion() {
   if (currentQuestionIndex.value < form.value.questions.length - 1) {
     currentQuestionIndex.value += 1;
     loadPreviousAnswer();
   } else {
-    submitForm(); // final redirect
+    submitForm();
   }
 }
 
-/**
- * New: Go back one question
- * - We don't automatically re-validate the current question
- *   when going back, but you could if desired.
- */
+// Go back one question
 function prevQuestion() {
   if (currentQuestionIndex.value > 0) {
-    // First, store the *current question's* answer so we don't lose it
     storeCurrentAnswer();
     currentQuestionIndex.value -= 1;
     loadPreviousAnswer();
   }
 }
 
-/**
- * Load the stored answer from formResponses for the newly active question.
- * This way, if the user previously answered this question, we restore it.
- */
+// Load the stored answer for the current question (if any)
 function loadPreviousAnswer() {
   hasError.value = false;
   errorMessage.value = "";
-
-  // Identify the question
   const question = form.value.questions[currentQuestionIndex.value];
   const existingResp = formResponses.value.find(
     (r) => r.questionId === question._id
@@ -420,7 +525,6 @@ function loadPreviousAnswer() {
       selectedAnswers.value = [];
     }
   } else {
-    // No response yet => clear out
     selectedAnswers.value = [];
     shortTextAnswer.value = "";
   }
@@ -431,10 +535,11 @@ function submitForm() {
   window.location.href = form.value.redirectUrl;
 }
 
-// Emit to hide loading (if you were using a parent loading screen)
+// Emit an event to hide any loading screen (if used)
 const emit = defineEmits(["hide-loading"]);
 emit("hide-loading");
 </script>
+
 
 <style scoped>
 /* Container */

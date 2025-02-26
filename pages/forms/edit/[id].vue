@@ -124,6 +124,8 @@
               <option value="long_text">Long Text</option>
               <option value="email">Email</option>
               <option value="phone_number">Phone Number</option>
+              <option value="first_name">First Name</option>
+              <option value="last_name">Last Name</option>
             </select>
           </div>
 
@@ -261,6 +263,14 @@ const typeConfig = {
   phone_number: {
     color: "#9b59b6", // Purple
     icon: "📞", // Example icon
+  },
+  first_name: {
+    color: "#ffff00", // Dark Blue
+    icon: "✍️", // Example icon
+  },
+  last_name: {
+    color: "#00ff00", // Dark Gray
+    icon: "✍️", // Example icon
   },
 };
 

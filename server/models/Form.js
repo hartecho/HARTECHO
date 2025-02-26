@@ -11,11 +11,19 @@ const questionSchema = new mongoose.Schema({
   description: String,
   type: {
     type: String,
-    enum: ['multiple_choice', 'short_text', 'long-text', 'email', 'phone_number'],
+    enum: [
+      'multiple_choice',
+      'short_text',
+      'long-text',
+      'email',
+      'phone_number',
+      'first_name',  // Added for first name
+      'last_name'    // Added for last name
+    ],
     required: true,
   },
   allow_multiple_selection: { type: Boolean, default: false },
-  choices: [choiceSchema], // Choices identified by their position or MongoDB's _id
+  choices: [choiceSchema],
   validations: {
     required: { type: Boolean, default: false },
   },
@@ -26,7 +34,7 @@ const questionSchema = new mongoose.Schema({
 const formSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: String,
-  questions: [questionSchema], // Array of questions with MongoDB-generated `_id`
+  questions: [questionSchema],
   redirectUrl: { type: String },
   views: { type: Number, default: 0 },
   createdAt: { type: Date, default: Date.now },

@@ -29,12 +29,12 @@
   
   <script setup>
 useSeoMeta({
-  title: "HARTECHO || SEO-Driven Websites & Marketing",
-  ogTitle: "HARTECHO || SEO-Driven Websites & Marketing",
+  title: "Custom-Coded E-Commerce Stores || HARTECHO",
+  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
   description:
-    "Discover HARTECHO's custom-built websites, data-driven ad campaigns, and modern branding solutions. Watch the video to learn more, download our SEO guide, and request a quote today.",
+    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Get our free SEO guide here to understand the unique benefits we provide.",
   ogDescription:
-    "Discover HARTECHO's custom-built websites, data-driven ad campaigns, and modern branding solutions. Watch the video to learn more, download our SEO guide, and request a quote today.",
+    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Get our free SEO guide here to understand the unique benefits we provide.",
   ogImage: "/HARTECHOLogo.webp",
   twitterCard: "/HARTECHOLogo.webp",
 });
