@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   routeRules: {
     // Homepage pre-rendered at build time
     '/': { prerender: true },
-    '/contact': { prerender: true },
+    '/free': { prerender: true },
     '/terms': { prerender: true },
     '/privacy': { prerender: true },
     // Blog posts page generated on demand, revalidates in background, cached on CDN for 1 hour (3600 seconds)
