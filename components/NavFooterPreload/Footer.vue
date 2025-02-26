@@ -141,7 +141,7 @@ const handleEmailSubmit = () => {
 /* 2) BACKGROUND CONTAINER + OVERLAY */
 .background-container {
   position: relative;
-  background: url("/Backgrounds/IntroBG3.webp") center center no-repeat;
+  background: url("/Backgrounds/introBG3.webp") center center no-repeat;
   background-size: cover;
   /* A moderate min-height to mimic the original design’s scale */
   min-height: 500px;
