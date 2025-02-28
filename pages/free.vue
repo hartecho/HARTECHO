@@ -4,26 +4,6 @@
     <section class="video-section">
       <WebSectionsFreePageVideo />
     </section>
-
-    <!-- Informational Section 1 -->
-    <!-- <section class="info-one">
-      <WebSectionsFreePageLongBanner />
-    </section> -->
-
-    <!-- Informational Section 2 -->
-    <!-- <section class="info-section info-two">
-      <WebSectionsFreePagePerformance />
-    </section> -->
-
-    <!-- Informational Section 3 -->
-    <!-- <section class="info-section2 info-three">
-      <WebSectionsFreepageSuccess />
-    </section> -->
-
-    <!-- Quote Form Section -->
-    <!-- <section class="quote-form-section">
-      <WebSectionsQuoteForm />
-    </section> -->
   </div>
 </template>
   
@@ -190,15 +170,6 @@ section {
   font-size: 1.2rem;
   line-height: 1.8;
   margin-bottom: 1rem;
-}
-
-/* Quote Form Section */
-.quote-form-section {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 50px 0 0 0;
 }
 
 @media (max-width: 768px) {

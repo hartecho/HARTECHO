@@ -4,52 +4,54 @@
     <div class="terms">
           <h1>Privacy Policy</h1>
           <h2>1. Information We Collect</h2>
-          <p>We may collect and process the following information:</p>
+          <p>We may collect and process the following information to provide and improve our services for custom-coded e-commerce store solutions:</p>
           
             <ul>
-                <li><b>Personal Identification Information:</b> Name, email address, phone number, etc.</li>
-                <li><b>Web Usage Information:</b> IP address, browser type, version, and operating system, page views, website navigation paths, etc.</li>
+                <li><b>Personal Identification Information:</b> Name, email address, phone number, etc., which may be provided when you fill out our forms or join our waitlist.</li>
+                <li><b>Web Usage Information:</b> IP address, browser type, version, and operating system, page views, website navigation paths, etc., to analyze how you interact with our site and improve your experience.</li>
+                <li><b>Form Submission Data:</b> Information you provide when submitting forms on our website, such as inquiries about custom e-commerce stores or waitlist sign-ups, including phone numbers used for SMS communications.</li>
             </ul>
           
           <h2>2. How We Use Your Information</h2>
           <p>We use your information to:</p>
           
             <ul>
-                <li>Provide our services to you.</li>
-                <li>Improve and personalize your experience on our website.</li>
-                <li>Communicate with you, including responding to your inquiries.</li>
-                <li>Send promotional emails about new products, special offers, or other information we think you may find interesting.</li>
+                <li>Provide our custom-coded e-commerce store services to you, including responding to inquiries and delivering tailored solutions.</li>
+                <li>Track and manage form submissions on our website, such as contact forms or waitlist sign-ups, to ensure we can follow up effectively.</li>
+                <li>Send text message (SMS) reminders or communications about your form submissions, waitlist status, or other relevant updates, based on your opt-in consent.</li>
+                <li>Improve and personalize your experience on our website and services.</li>
+                <li>Communicate with you, including responding to your inquiries or notifying you of important updates about our services.</li>
             </ul>
           
-          <h2>3. Sharing of Your Information</h2>
-          <p>We do not sell, distribute, or lease your personal information to third parties unless we have your permission or are required by law to do so.</p>
-          <h2>4. Security</h2>
-          <p>We are committed to ensuring that your information is secure. In order to prevent unauthorized access or disclosure, we have put in place suitable physical, electronic, and managerial procedures to safeguard and secure the information we collect online.</p>
-          <h2>5. Cookies</h2>
-          <p>Our website uses cookies to enhance your experience. Cookies are small files placed on your computer's hard drive that help analyze web traffic or let you know when you visit a particular site.</p>
-          <h2>6.Google Analytics</h2>
+          <h2>3. SMS Waitlist and Form Tracking</h2>
+          <p>Our website uses cookies and form tracking to monitor when you’ve filled out a form or shown interest in our services, such as filling out our client onboarding form or joining our waitlist. This information is used to determine when to send reminder messages via SMS. For example, HARTECHO LLC’s website uses cookies and form data to track when you’ve submitted a form or expressed interest in our custom e-commerce store services. This information is used to determine when to send reminder messages or waitlist updates via SMS.</p>
+
+          <h2>4. Sharing of Your Information</h2>
+          <p>We do not sell, distribute, or lease your personal information to non-affiliated third parties unless we have your permission or are required by law to do so. This excludes SMS opt-in data and consent; this information will not be shared with any third parties.</p>
+
+          <h2>5. Security</h2>
+          <p>We are committed to ensuring that your information is secure. To prevent unauthorized access or disclosure, we have implemented suitable physical, electronic, and managerial procedures to safeguard and secure the information we collect online.</p>
+
+          <h2>6. Cookies</h2>
+          <p>Our website uses cookies to enhance your experience and track interactions, such as form submissions or website navigation. Cookies are small files placed on your computer's hard drive that help analyze web traffic or let you know when you visit a particular site. You can choose to accept or decline cookies, but declining may limit your ability to use certain features of our site.</p>
+
+          <h2>7. Google Analytics</h2>
           <p>Our website uses Google Analytics, a web analytics service provided by Google, Inc. ("Google"). Google Analytics uses "cookies", which are text files placed on your computer, to help the website analyze how users use the site. The information generated by the cookie about your use of the website (including your IP address) will be transmitted to and stored by Google.</p>
           <p>We use the data collected by Google Analytics to analyze website traffic and improve our website. Google may also transfer this information to third parties where required to do so by law, or where such third parties process the information on Google’s behalf. Google will not associate your IP address with any other data held by Google.</p>
           <p>For more information on Google Analytics and privacy, please visit <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</p>
-          <h2>7. Links to Other Websites</h2>
+
+          <h2>8. Location Tracking and Location-Based Services</h2>
+          <p>We do not currently engage in location tracking or location-based services. If this changes in the future, we will update this policy to fully describe how that data is collected and for what purpose.</p>
+
+          <h2>9. Links to Other Websites</h2>
           <p>Our website may contain links to other websites of interest. However, once you have used these links to leave our site, you should note that we do not have any control over that other website.</p>
-          <h2>8. Controlling Your Personal Information</h2>
-          <p>You may choose to restrict the collection or use of your personal information in the following ways:</p>
-          
-            <ul>
-                <li>Whenever you are asked to fill in a form on the website, look for the box that you can click to indicate that you do not want the information to be used by anybody for direct marketing purposes.</li>
-                <li>If you have previously agreed to us using your personal information for direct marketing purposes, you may change your mind at any time by writing to or emailing us.</li>
-            </ul>
-          
-          <h2>9. Changes to Our Privacy Policy</h2>
-          <p>We may update this policy from time to time by updating this page. You should check this page occasionally to ensure that you are happy with any changes.</p>
-          <h2>10. Contact Us</h2>
+
+          <h2>10. Changes to Our Privacy Policy</h2>
+          <p>We may update this policy from time to time by updating this page. You should check this page occasionally to ensure that you are happy with any changes. Any updates will be posted on this page, and we may notify you via email or SMS if significant changes occur.</p>
+
+          <h2>11. Contact Us</h2>
           <p>If you have any questions about this Privacy Policy, please contact us at sales@hartecho.com.</p>
       </div>
-    <!-- prettier-ignore -->
-    <section class="quote-form-section">
-      <WebSectionsQuoteForm backgroundColor="rgba(0,0,0,0.1)" />
-    </section>
   </div>
 </template>
   

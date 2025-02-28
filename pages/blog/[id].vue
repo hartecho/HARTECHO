@@ -512,10 +512,6 @@ p {
   margin: 0 auto;
 }
 
-.quote-form-section {
-  margin-top: 2rem;
-}
-
 /* BlogPostContent Styles */
 h2 {
   font-family: "Poppins";

@@ -14,57 +14,120 @@
           class="email-input"
           required
         />
-        <button type="submit" class="submit-btn">Join Waitlist</button>
+        <button type="submit" class="submit-btn" :disabled="isSubmitting">
+          Join Waitlist
+        </button>
       </form>
+      <div v-if="successMessage" class="success-message">
+        {{ successMessage }}
+      </div>
+      <div v-if="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
     </div>
   </div>
 </template>
-  
-  <script setup>
+
+<script setup>
 import { ref } from "vue";
+import { useNuxtApp, useRuntimeConfig } from "#app";
 
-const isVisible = ref(true); // Controls visibility of the bar
-const email = ref(""); // Stores the email input
+const isVisible = ref(true);
+const email = ref("");
+const successMessage = ref("");
+const errorMessage = ref("");
+const isSubmitting = ref(false);
 
-// Close the bar
+// Check if running on localhost to exclude Meta Pixel tracking
+const isLocalhost = () =>
+  process.client &&
+  (window.location.hostname === "localhost" ||
+    window.location.hostname === "127.0.0.1");
+
+// Clear messages after 5 seconds
+const clearMessages = () => {
+  setTimeout(() => {
+    successMessage.value = "";
+    errorMessage.value = "";
+  }, 5000);
+};
+
+// Close the sticky bar
 const closeBar = () => {
   isVisible.value = false;
 };
 
-// Handle form submission (simplified for this example)
-const submitEmail = () => {
-  console.log("Email submitted:", email.value);
-  // Here, you could add logic to send the email to a backend or API
-  email.value = ""; // Clear the input after submission
-  alert(
-    "Thank you for joining our waitlist! We’ll notify you when we’re available."
-  );
+// Handle form submission with Klaviyo and Facebook Pixel tracking
+const submitEmail = async () => {
+  const { $klaviyo, $klaviyoClientApi, $fbq } = useNuxtApp();
+
+  // Clear any previous messages and indicate submission is in progress
+  successMessage.value = "";
+  errorMessage.value = "";
+  isSubmitting.value = true;
+
+  if (!email.value) {
+    errorMessage.value = "Please enter a valid email address.";
+    isSubmitting.value = false;
+    clearMessages();
+    return;
+  }
+
+  try {
+    // Track the "Lead" event with Klaviyo
+    $klaviyo("track", "Lead", {
+      content_name: "E-commerce Store Waitlist Signup",
+      email: email.value,
+    });
+
+    // Track the "Lead" event with Meta Pixel (if not on localhost)
+    if (!isLocalhost()) {
+      $fbq("track", "Lead", {
+        content_name: "E-commerce Store Waitlist Signup",
+        email: email.value,
+      });
+    }
+
+    // Subscribe the user to the waitlist using Klaviyo's client API
+    await $klaviyoClientApi.subscribe(
+      useRuntimeConfig().public.KLAVIYO_WAITLIST_ID, // Replace with your Klaviyo list ID
+      email.value,
+      null,
+      "Website Sticky Bar Form"
+    );
+
+    // On success, show a success message and clear the email field
+    successMessage.value = "Thank you! You've been added to the waitlist.";
+    email.value = "";
+    clearMessages();
+  } catch (error) {
+    console.error("Error subscribing to waitlist:", error);
+    errorMessage.value = "Something went wrong. Please try again later.";
+    clearMessages();
+  } finally {
+    isSubmitting.value = false;
+  }
 };
 </script>
-  
-  <style scoped>
+
+<style scoped>
 .sticky-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  background-color: rgba(
-    51,
-    51,
-    51,
-    0.95
-  ); /* Semi-transparent black, matching service cards */
+  background-color: rgba(51, 51, 51, 0.95);
   color: white;
-  padding: 1.5rem 2rem 1rem 2rem; /* Increased top padding to 1.5rem to account for close button overlap */
-  z-index: 1000; /* Ensure it stays on top */
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3); /* Subtle shadow for elevation */
+  padding: 1.5rem 2rem 1rem 2rem;
+  z-index: 1000;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
   font-family: "Source Sans Pro", sans-serif;
 }
 
 .close-btn {
   position: absolute;
   top: 0.5rem;
-  right: 1rem; /* Adjusted for better positioning in the top-right corner */
+  right: 1rem;
   background: none;
   border: none;
   color: white;
@@ -72,11 +135,11 @@ const submitEmail = () => {
   cursor: pointer;
   padding: 0.5rem;
   line-height: 1;
-  z-index: 1001; /* Ensure it stays above other content */
+  z-index: 1001;
 }
 
 .close-btn:hover {
-  color: #0072a3; /* Match the accent color from other components */
+  color: #0072a3;
 }
 
 .bar-content {
@@ -91,7 +154,7 @@ const submitEmail = () => {
 .message {
   font-size: 1rem;
   margin: 0;
-  color: #ccc; /* Slightly lighter text for contrast, matching service card paragraphs */
+  color: #ccc;
 }
 
 .waitlist-form {
@@ -105,47 +168,41 @@ const submitEmail = () => {
   font-size: 1rem;
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 0; /* No rounded corners, matching buttons in other components */
-  background-color: rgba(
-    255,
-    255,
-    255,
-    0.1
-  ); /* Light transparent white for input */
+  border-radius: 0;
+  background-color: rgba(255, 255, 255, 0.1);
   color: white;
   width: 200px;
   outline: none;
 }
 
 .email-input::placeholder {
-  color: #999; /* Lighter placeholder text */
+  color: #999;
 }
 
 .submit-btn {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 1rem;
   padding: 0.5rem 1rem;
-  background-color: #0072a3; /* Match the blue from tags and buttons in other components */
+  background-color: #0072a3;
   color: white;
   border: none;
   cursor: pointer;
   transition: all 0.1s;
-  border-radius: 0; /* No rounded corners */
+  border-radius: 0;
   font-weight: bold;
 }
 
 .submit-btn:hover {
-  background-color: #004280; /* Darker blue on hover, matching other buttons */
+  background-color: #004280;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
   .sticky-bar {
-    padding: 2.5rem 1rem 1rem 1rem; /* Maintain top padding, adjust sides */
+    padding: 2.5rem 1rem 1rem 1rem;
   }
 
   .close-btn {
-    right: 0.5rem; /* Adjust positioning for smaller screens */
+    right: 0.5rem;
   }
 
   .message {
@@ -166,7 +223,7 @@ const submitEmail = () => {
 
 @media (max-width: 480px) {
   .sticky-bar {
-    padding: 2.5rem 0.5rem 1rem 0.5rem; /* Maintain top padding, adjust sides for mobile */
+    padding: 2.5rem 0.5rem 1rem 0.5rem;
   }
 
   .close-btn {
@@ -197,5 +254,20 @@ const submitEmail = () => {
     font-size: 0.8rem;
     padding: 0.3rem 0.6rem;
   }
+}
+
+/* Success and error message styling */
+.success-message {
+  margin-top: 1rem;
+  color: #4caf50;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.error-message {
+  margin-top: 1rem;
+  color: #f44336;
+  font-size: 0.9rem;
+  text-align: center;
 }
 </style>

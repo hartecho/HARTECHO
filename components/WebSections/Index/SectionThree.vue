@@ -4,9 +4,9 @@
     <section class="support-section">
       <div class="content-wrapper">
         <div class="tag">Freedom</div>
-        <h1 class="title">
+        <h2 class="title">
           How to Break Free from E-Commerce Platform Limitations
-        </h1>
+        </h2>
         <p class="description">
           Tired of being constrained by the restrictions of platforms like
           Shopify? A custom-coded e-commerce store gives you unparalleled

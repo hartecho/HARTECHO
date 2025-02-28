@@ -7,7 +7,7 @@
       </div>
       <div class="content-wrapper">
         <div class="tag">Design</div>
-        <h1 class="title">How Can I Enhance My Store’s User Experience?</h1>
+        <h2 class="title">How Can I Enhance My Store’s User Experience?</h2>
         <p class="subtitle first">
           Many e-commerce stores rely on templates, which may look appealing but
           often fail to provide an intuitive purchasing experience for visitors.

@@ -36,7 +36,7 @@
       <slot />
     </div>
 
-    <!-- <SubcomponentsBookedPopup /> -->
+    <SubcomponentsBookedPopup />
 
     <footer class="footer">
       <template

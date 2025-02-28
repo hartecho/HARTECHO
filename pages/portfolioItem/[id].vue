@@ -86,9 +86,6 @@
         </div>
       </div>
     </div>
-    <section class="quote-form-section">
-      <WebSectionsQuoteForm backgroundColor="rgba(0,0,0,0.1)" />
-    </section>
   </div>
   <div v-else class="loading">
     <p>Loading...</p>
@@ -391,10 +388,6 @@ h2 {
   font-size: 1.5rem;
   margin-top: 2rem;
   color: #333;
-}
-
-.quote-form-section {
-  margin-top: 2rem;
 }
 
 @media (max-width: 1024px) {

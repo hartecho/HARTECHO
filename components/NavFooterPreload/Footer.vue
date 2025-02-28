@@ -7,23 +7,42 @@
       </div>
     </nav>
 
-    <!-- Main background container -->
     <div class="background-container">
-      <!-- The dark overlay behind text only (NOT covering input & top nav) -->
       <div class="text-overlay"></div>
 
-      <!-- Main content (Sign up + More Resources) -->
       <div class="content-section">
         <div class="signup-offer">
-          <h2>Sign up for exclusive offers</h2>
-          <p>Our best deals for our most loyal customers</p>
+          <h2>Join Our Waitlist</h2>
+          <p>Be next in line to get your new custom e-commerce store</p>
           <form @submit.prevent="handleEmailSubmit">
-            <input
-              v-model="email"
-              type="email"
-              placeholder="Enter your email"
-              aria-label="Email for exclusive offers"
-            />
+            <div class="input-group">
+              <input
+                v-model="email"
+                type="email"
+                placeholder="Enter your email"
+                aria-label="Email for exclusive offers"
+              />
+              <button type="submit" :disabled="isSubmitting">Submit</button>
+            </div>
+            <div class="consent-disclaimer">
+              <input
+                v-model="consentAgreed"
+                type="checkbox"
+                id="consent"
+                aria-label="Consent to receive updates via email"
+              />
+              <label for="consent">
+                By submitting your email, you agree to receive updates about our
+                custom e-commerce store waitlist via email. You can unsubscribe
+                at any time.
+              </label>
+            </div>
+            <div v-if="successMessage" class="success-message">
+              {{ successMessage }}
+            </div>
+            <div v-if="errorMessage" class="error-message">
+              {{ errorMessage }}
+            </div>
           </form>
         </div>
 
@@ -48,7 +67,6 @@
       </div>
     </div>
 
-    <!-- Bottom black bar -->
     <div class="bottom-bar">
       <p>© 2025 HARTECHO * Powered by HARTECHO</p>
     </div>
@@ -58,49 +76,106 @@
 <script setup>
 import { useNuxtApp } from "#app";
 
-// Reactive email input
+// Reactive inputs and states
 const email = ref("");
+const consentAgreed = ref(false);
+const successMessage = ref("");
+const errorMessage = ref("");
+const isSubmitting = ref(false);
 
-// Check if running on localhost to exclude tracking
+// Check if running on localhost to exclude Meta Pixel tracking
 const isLocalhost = () =>
   process.client &&
   (window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1");
 
-// Function to handle "Free SEO Guide" click with pixel tracking
+// Clear messages after a timeout
+const clearMessages = () => {
+  setTimeout(() => {
+    successMessage.value = "";
+    errorMessage.value = "";
+  }, 5000); // Clear messages after 5 seconds
+};
+
+// Function to handle "Free SEO Guide" click with Meta Pixel tracking
 const handleFreeSEOGuideClick = (event) => {
   const { $fbq } = useNuxtApp();
   if (!isLocalhost()) {
     $fbq("track", "Lead", { content_name: "Free SEO Guide" });
   }
-  // Navigation happens automatically via NuxtLink
 };
 
-// Function to handle "Book a Call" click with pixel tracking
+// Function to handle "Book a Call" click with Meta Pixel tracking
 const handleBookCallClick = (event) => {
   const { $fbq } = useNuxtApp();
   if (!isLocalhost()) {
     $fbq("track", "Lead", { content_name: "Book a Call" });
   }
-  // Navigation happens automatically via NuxtLink
 };
 
-// Function to handle email submission with pixel tracking
-const handleEmailSubmit = () => {
-  const { $fbq } = useNuxtApp();
-  if (!isLocalhost() && email.value) {
-    $fbq("track", "Lead", {
-      content_name: "Exclusive Offers Signup",
+// Function to handle email submission with Klaviyo and Meta Pixel tracking
+const handleEmailSubmit = async () => {
+  const { $klaviyo, $klaviyoClientApi, $fbq } = useNuxtApp();
+
+  // Clear previous messages
+  successMessage.value = "";
+  errorMessage.value = "";
+  isSubmitting.value = true;
+
+  if (!email.value) {
+    errorMessage.value = "Please enter a valid email address.";
+    isSubmitting.value = false;
+    clearMessages();
+    return;
+  }
+
+  if (!consentAgreed.value) {
+    errorMessage.value = "Please agree to receive updates before submitting.";
+    isSubmitting.value = false;
+    clearMessages();
+    return;
+  }
+
+  try {
+    // Track the "Lead" event with Klaviyo
+    $klaviyo("track", "Lead", {
+      content_name: "E-commerce Store Waitlist Signup",
       email: email.value,
     });
-    // Add your email submission logic here (e.g., API call)
-    console.log("Email submitted:", email.value); // Placeholder
-    email.value = ""; // Reset input
+
+    // Track the "Lead" event with Meta Pixel
+    if (!isLocalhost()) {
+      $fbq("track", "Lead", {
+        content_name: "E-commerce Store Waitlist Signup",
+        email: email.value,
+      });
+    }
+
+    // Subscribe the user to the waitlist
+    await $klaviyoClientApi.subscribe(
+      useRuntimeConfig().public.KLAVIYO_WAITLIST_ID, // Replace with your Klaviyo list ID
+      email.value,
+      null,
+      "Website Footer Form"
+    );
+
+    // Success handling
+    successMessage.value = "Thank you! You've been added to the waitlist.";
+    email.value = "";
+    consentAgreed.value = false;
+    clearMessages();
+  } catch (error) {
+    console.error("Error submitting email or subscribing to waitlist:", error);
+    errorMessage.value = "Something went wrong. Please try again later.";
+    clearMessages();
+  } finally {
+    isSubmitting.value = false;
   }
 };
 </script>
 
 <style scoped>
+/* Base styles */
 .office-footer {
   font-family: Arial, sans-serif;
   color: #fff;
@@ -109,24 +184,28 @@ const handleEmailSubmit = () => {
   margin-top: 10rem;
 }
 
-/* 1) TOP NAV: black bar with Refund & Privacy links */
 .top-nav {
   display: flex;
   justify-content: center;
   align-items: center;
   background-color: #000;
   padding: 0.75rem 2rem;
-  background: #111;
+  z-index: 1;
 }
 
 .nav-buttons {
   display: flex;
   align-items: center;
-  width: 1300px; /* or use max-width to help with responsiveness */
+  width: 1300px;
+  color: white;
+}
+
+.nav-buttons a {
+  color: white;
 }
 
 .top-nav a {
-  color: #fff;
+  color: white;
   text-decoration: none;
   font-size: 1rem;
   font-weight: 500;
@@ -137,17 +216,14 @@ const handleEmailSubmit = () => {
   text-decoration: underline;
 }
 
-/* 2) BACKGROUND CONTAINER + OVERLAY */
 .background-container {
   position: relative;
   background: url("/Backgrounds/introBG3.webp") center center no-repeat;
   background-size: cover;
-  /* A moderate min-height to mimic the original design’s scale */
   min-height: 500px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  /* Default horizontal padding at large screens */
   padding: 0 2rem;
 }
 
@@ -158,30 +234,33 @@ const handleEmailSubmit = () => {
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.7);
-  z-index: 1; /* behind content-section */
+  z-index: 1;
 }
 
-/* 3) MAIN CONTENT SECTION */
 .content-section {
   position: relative;
-  z-index: 2; /* above .text-overlay */
+  z-index: 2;
   display: flex;
-  justify-content: flex-start;
   align-items: flex-start;
-  gap: 10rem;
-  /* This container can have a fixed width or max-width to help in large viewports */
+  gap: 5rem;
   width: 1300px;
   margin-top: 5rem;
 }
 
 .signup-offer {
   margin-right: 2rem;
+  width: 50%;
 }
 
 .signup-offer h2 {
   font-size: 2.2rem;
   margin-bottom: 0.5rem;
   font-weight: 700;
+  color: #fff;
+}
+
+#consent {
+  width: 1rem;
 }
 
 .signup-offer p {
@@ -192,18 +271,89 @@ const handleEmailSubmit = () => {
   color: #ddd;
 }
 
+.signup-offer .input-group {
+  display: flex;
+  gap: 1rem;
+}
+
 .signup-offer input {
-  width: 100%;
+  width: 250px;
   padding: 0.8rem 1rem;
   font-size: 1rem;
   border: none;
   outline: none;
+  background-color: #fff;
+  color: #333;
+}
+
+.signup-offer input::placeholder {
+  color: #999;
+}
+
+.signup-offer .consent-disclaimer {
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  color: #ddd;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.signup-offer .consent-disclaimer input[type="checkbox"] {
+  margin-top: 0.3rem;
+}
+
+.signup-offer .consent-disclaimer label {
+  line-height: 1.4;
+}
+
+.signup-offer .consent-disclaimer a {
+  color: #ddd;
+  text-decoration: underline;
+}
+
+.signup-offer .consent-disclaimer a:hover {
+  color: #fff;
+}
+
+.signup-offer button {
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #d9d9d9;
+  color: #333;
+  cursor: pointer;
+}
+
+.signup-offer button:hover {
+  background-color: #c0c0c0;
+}
+
+.signup-offer button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.success-message {
+  margin-top: 1rem;
+  color: #4caf50;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.error-message {
+  margin-top: 1rem;
+  color: #f44336;
+  font-size: 0.9rem;
+  text-align: center;
 }
 
 .more-resources h2 {
   font-size: 2.2rem;
   margin-bottom: 1rem;
   font-weight: 700;
+  color: #fff;
 }
 
 .more-resources ul {
@@ -227,28 +377,31 @@ const handleEmailSubmit = () => {
   text-decoration: underline;
 }
 
-/* 4) BOTTOM BAR */
 .bottom-bar {
   background-color: black;
   text-align: center;
   padding: 0.75rem 1rem;
   margin-top: auto;
+  color: white;
+  z-index: 1;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .bottom-bar p {
   margin: 0;
   font-size: 0.9rem;
+  color: #fff;
 }
 
-/* ======================================== *
- *       RESPONSIVE BREAKPOINTS
- * ======================================== */
-
-/* At or below 1024px: reduce overall width and spacing a bit */
+/* Responsive Breakpoints */
 @media (max-width: 1024px) {
   .nav-buttons {
     width: 100%;
-    /* justify-content: space-between; */
   }
 
   .office-footer {
@@ -256,13 +409,12 @@ const handleEmailSubmit = () => {
   }
 
   .content-section {
-    /* width: 90%;
+    width: 90%;
     gap: 5rem;
-    margin-top: 3rem; */
+    margin-top: 3rem;
   }
 }
 
-/* At or below 768px: reduce horizontal padding to 1.5rem; stack content vertically, etc. */
 @media (max-width: 768px) {
   .office-footer {
     margin-top: 5rem;
@@ -278,7 +430,7 @@ const handleEmailSubmit = () => {
 
   .background-container {
     min-height: 500px;
-    padding: 0 1.5rem; /* per your request */
+    padding: 0 1.5rem;
   }
 
   .content-section {
@@ -288,16 +440,28 @@ const handleEmailSubmit = () => {
     width: 100%;
     margin-top: 1rem;
   }
+
+  .signup-offer .input-group {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .signup-offer input {
+    width: 100%;
+  }
+
+  .signup-offer button {
+    width: 100%;
+  }
 }
 
-/* At or below 480px: reduce horizontal padding to 1rem; also reduce font sizes, etc. */
 @media (max-width: 480px) {
   .top-nav {
     padding: 0.75rem 1rem;
   }
 
   .background-container {
-    padding: 0 1rem; /* per your request */
+    padding: 0 1rem;
   }
 
   .signup-offer h2 {
@@ -311,6 +475,10 @@ const handleEmailSubmit = () => {
 
   .more-resources a {
     font-size: 1rem;
+  }
+
+  .signup-offer .consent-disclaimer {
+    font-size: 0.8rem;
   }
 }
 </style>

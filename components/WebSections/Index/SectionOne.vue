@@ -4,7 +4,7 @@
     <section class="speed-section">
       <div class="content-wrapper">
         <div class="tag">Speed</div>
-        <h1 class="title">Why Are My Conversion Rates So Low?</h1>
+        <h2 class="title">Why Are My Conversion Rates So Low?</h2>
         <p class="subtitle">
           Research from Google Analytics shows that 53% of users abandon
           websites that take longer than 3 seconds to load. Template-based
