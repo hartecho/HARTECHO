@@ -10,7 +10,11 @@
     <template v-if="route.path.startsWith('/forms')">
       <!-- No nav bar for any /forms route -->
     </template>
-    <template v-else-if="route.path.startsWith('/blog')">
+    <template
+      v-else-if="
+        route.path.startsWith('/blog') || route.path.startsWith('/calc')
+      "
+    >
       <NavFooterPreloadWhiteBGNav
         :navPaths="paths1"
         @toggleMobileNav="showMobileNav = !showMobileNav"
