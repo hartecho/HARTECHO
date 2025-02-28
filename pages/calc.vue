@@ -2,7 +2,8 @@
   <div class="roi-calculator-container">
     <!-- Header / Hero Section -->
     <header class="hero">
-      <h1>Custom Store ROI Calculator</h1>
+      <NuxtImg src="/HARTECHOLogo.webp" alt="HARTECHO Logo" class="logo" />
+      <h1>Custom E-Commerce Store ROI Calculator</h1>
       <p class="tagline">
         Trusted, Data-Driven Estimates Based on Research from Google, Akamai,
         Forrester, and eConsultancy
@@ -49,7 +50,8 @@
             placeholder="e.g., 500"
           />
           <small class="description">
-            Include costs for tax APIs, database hosting, AWS, etc.
+            These are the ongoing costs to maintain your NEW store, including
+            tax APIs, database hosting, AWS, etc.
           </small>
         </div>
       </div>
@@ -339,6 +341,9 @@ const netExtraRevenue = computed(() => {
 const paybackPeriod = computed(() => {
   return netExtraRevenue.value > 0 ? 20000 / netExtraRevenue.value : Infinity;
 });
+
+const emit = defineEmits(["hide-loading"]);
+emit("hide-loading");
 </script>
   
   <style scoped>
@@ -350,15 +355,15 @@ const paybackPeriod = computed(() => {
   --card-background: #fff;
   --details-background: #f1f1f1;
   --accent-color: #007bff;
-  --font-family: "Helvetica Neue", Arial, sans-serif;
+  --font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
 }
 
 .roi-calculator-container {
   width: 100%;
   max-width: 1200px;
-  margin: 0 auto;
+  margin: 5rem auto;
   padding: 1em;
-  font-family: var(--font-family);
+  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
   color: var(--secondary-color);
 }
 
@@ -369,6 +374,11 @@ const paybackPeriod = computed(() => {
   margin-bottom: 1em;
   background: var(--background-light);
   border-bottom: 2px solid var(--primary-color);
+}
+
+.logo {
+  height: 5rem;
+  width: 5rem;
 }
 
 .hero h1 {
