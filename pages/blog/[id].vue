@@ -241,55 +241,134 @@ const addComment = async (newCommentData) => {
   }
 };
 
-const description = computed(() => {
-  return post.value
-    ? `${post.value.title} - HARTECHO Digital Marketing Blog || Custom Websites, SEO, Ads, and Branding`
-    : "HARTECHO Digital Marketing Blog || #1 Utah-based Marketing Agency";
-});
-
 onMounted(async () => {
   post.value.views++;
   incrementViews();
 });
 
-watchEffect(() => {
-  if (post.value) {
-    useHead({
-      link: [
-        {
-          rel: "canonical",
-          href: `https://www.hartecho.com/blog/${post.value._id}`,
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: `https://www.hartecho.com/blog/${post.value._id}`,
+    },
+  ],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: post.value.mainTitle,
+        name: post.value.mainTitle,
+        url: `https://www.hartecho.com/blog/${post.value._id}`,
+        description: post.value.description,
+        datePublished: post.value.date,
+        dateModified: post.value.updatedAt || post.value.date,
+        image: `https://www.hartecho.com/BlogPics/${post.value.image}`,
+        keywords: post.value.tags.join(", "),
+        author: {
+          "@type": "Person",
+          name: post.value.author.name,
         },
-      ],
-      script: [
-        {
-          type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "BlogPosting",
-            headline: post.value.mainTitle,
-            image: post.value.image,
-            author: {
-              "@type": "Person",
-              name: post.value.author.name,
+        publisher: {
+          "@type": "Organization",
+          name: "HARTECHO",
+          url: "https://www.hartecho.com",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://www.hartecho.com/HARTECHOLogo.webp",
+            width: 500,
+            height: 500,
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            telephone: "+1-801-793-5456",
+            contactType: "Customer Service",
+            areaServed: "US",
+            availableLanguage: ["English"],
+          },
+        },
+        mainEntityOfPage: {
+          "@type": "WebPage",
+          "@id": `https://www.hartecho.com/blog/${post.value._id}`,
+        },
+        articleSection: post.value.tags.join(", "),
+        wordCount: post.value.structuredData.wordCount || undefined,
+        timeRequired: post.value.structuredData.readingTime
+          ? `PT${post.value.structuredData.readingTime.split(" ")[0]}M`
+          : undefined,
+        discussionUrl: `https://www.hartecho.com/blog/${post.value._id}#comments`,
+        commentCount: post.value.comments ? post.value.comments.length : 0,
+        comment: post.value.comments.map((comment) => ({
+          "@type": "Comment",
+          author: {
+            "@type": "Person",
+            name: comment.name,
+          },
+          datePublished: comment.date,
+          text: comment.comment,
+        })),
+        potentialAction: {
+          "@type": "Action",
+          target: `https://www.hartecho.com/blog/${post.value._id}`,
+          name: "Read Blog Post",
+          description: `Explore insights on ${post.value.tags.join(
+            ", "
+          )} in this HARTECHO blog post.`,
+        },
+        about: {
+          "@type": "Thing",
+          name: post.value.tags,
+        },
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.hartecho.com",
             },
-            datePublished: post.value.date,
-            description: post.value.description,
-            keywords: post.value.tags.join(", "),
-          }),
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Blog",
+              item: "https://www.hartecho.com/blog",
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: post.value.mainTitle,
+              item: `https://www.hartecho.com/blog/${post.value._id}`,
+            },
+          ],
         },
-      ],
-    });
+      }),
+    },
+  ],
+});
 
-    useSeoMeta({
-      title: post.value.mainTitle,
-      ogTitle: post.value.mainTitle,
-      description: post.value.description,
-      ogDescription: post.value.description,
-      ogImage: post.value.image,
-      twitterCard: post.value.image,
-    });
-  }
+useSeoMeta({
+  // Universal SEO
+  title: post.value.mainTitle,
+  description: post.value.description,
+
+  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+  ogTitle: post.value.mainTitle,
+  ogDescription: post.value.description,
+  ogImage: `https://www.hartecho.com/BlogPics/${post.value.image}`,
+  ogUrl: `https://hartecho.com/blog/${post.value._id}`,
+  ogType: "article",
+
+  // Twitter/X
+  twitterTitle: post.value.mainTitle,
+  twitterDescription: post.value.description,
+  twitterImage: `https://www.hartecho.com/BlogPics/${post.value.image}`,
+  twitterCard: "summary_large_image",
+
+  // Pinterest
+  pinterestRichPin: "true",
 });
 
 const incrementViews = async () => {

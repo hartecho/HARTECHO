@@ -176,6 +176,31 @@ const loading = ref(false);
 const allLoaded = ref(false);
 const loadMoreTrigger = ref(null);
 
+useSeoMeta({
+  // Universal SEO
+  title: "E-Commerce SEO & Web Development Insights || HARTECHO Blog",
+  description:
+    "Stay ahead in e-commerce with expert insights on SEO, web development, and custom-coded online stores. Learn how to optimize your business for success!",
+
+  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+  ogTitle: "E-Commerce SEO & Web Development Insights || HARTECHO Blog",
+  ogDescription:
+    "Explore expert tips and strategies for building high-performance e-commerce websites. From SEO to cutting-edge web development, HARTECHO's blog has you covered!",
+  ogImage: "https://hartecho.com/HARTECHOLogo.webp",
+  ogUrl: "https://hartecho.com/blog",
+  ogType: "website",
+
+  // Twitter/X
+  twitterTitle: "E-Commerce SEO & Web Development Insights || HARTECHO Blog",
+  twitterDescription:
+    "Get the latest insights on e-commerce SEO, custom-coded websites, and online store optimization from HARTECHO’s experts.",
+  twitterImage: "https://hartecho.com/HARTECHOLogo.webp",
+  twitterCard: "summary_large_image",
+
+  // Pinterest
+  pinterestRichPin: "true",
+});
+
 // SSR: initial fetch using useFetch (runs on server and client)
 const { data: initialData } = await useFetch("/api/blogs", {
   query: { tag: selectedTag.value, page: 1, limit: itemsPerPage.value },

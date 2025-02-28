@@ -47,14 +47,28 @@
 
 <script setup>
 useSeoMeta({
+  // Universal SEO
   title: "Terms of Service || HARTECHO",
-  ogTitle: "Terms of Service || HARTECHO",
   description:
-    "Read HARTECHO's Terms of Service to understand the rules, conditions, and responsibilities for using our website and custom-coded e-commerce store services.",
+    "Review HARTECHO's Terms of Service to understand the guidelines, conditions, and responsibilities when using our website and custom e-commerce development services.",
+
+  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+  ogTitle: "Terms of Service || HARTECHO",
   ogDescription:
-    "Read HARTECHO's Terms of Service to understand the rules, conditions, and responsibilities for using our website and custom-coded e-commerce store services.",
-  ogImage: "/HARTECHOLogo.webp",
-  twitterCard: "/HARTECHOLogo.webp",
+    "Read HARTECHO’s Terms of Service to learn about your rights and responsibilities when using our custom e-commerce solutions and digital services.",
+  ogImage: "/HARTECHOLogo.webp", // Image remains in the root public folder
+  ogUrl: "https://hartecho.com/terms",
+  ogType: "website",
+
+  // Twitter/X
+  twitterTitle: "Terms of Service || HARTECHO",
+  twitterDescription:
+    "Understand the terms and conditions for using HARTECHO’s website and custom e-commerce services. Read our full Terms of Service here.",
+  twitterImage: "/HARTECHOLogo.webp", // Ensuring correct public path usage
+  twitterCard: "summary_large_image",
+
+  // Pinterest
+  pinterestRichPin: "true",
 });
 
 // Structured Data

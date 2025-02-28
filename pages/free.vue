@@ -9,14 +9,28 @@
   
   <script setup>
 useSeoMeta({
+  // Universal SEO
   title: "Custom-Coded E-Commerce Stores || HARTECHO",
-  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
   description:
-    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Get our free SEO guide here to understand the unique benefits we provide.",
+    "Boost your e-commerce success with a high-performance, custom-coded website. HARTECHO specializes in cutting-edge development and SEO optimization to help you increase sales and outrank competitors. Get our free SEO guide today!",
+
+  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
   ogDescription:
-    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Get our free SEO guide here to understand the unique benefits we provide.",
-  ogImage: "/HARTECHOLogo.webp",
-  twitterCard: "/HARTECHOLogo.webp",
+    "A slow or templated e-commerce site could be costing you sales. HARTECHO builds fully optimized, custom-coded online stores that load fast, rank higher, and convert better. Download our free SEO guide to learn more!",
+  ogImage: "https://hartecho.com/HARTECHOLogo.webp",
+  ogUrl: "https://hartecho.com/free",
+  ogType: "website",
+
+  // Twitter/X
+  twitterTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
+  twitterDescription:
+    "Struggling with slow load times and poor SEO rankings? HARTECHO builds high-performance, custom-coded e-commerce stores designed to increase sales. Get our free SEO guide to see how!",
+  twitterImage: "https://hartecho.com/HARTECHOLogo.webp",
+  twitterCard: "summary_large_image",
+
+  // Pinterest
+  pinterestRichPin: "true",
 });
 
 useHead({
@@ -32,10 +46,10 @@ useHead({
       children: JSON.stringify({
         "@context": "https://schema.org",
         "@type": "WebPage",
-        name: "HARTECHO - Custom Websites & SEO",
+        name: "HARTECHO - Custom E-Commerce Websites & SEO",
         url: "https://www.hartecho.com/free",
         description:
-          "HARTECHO creates cutting-edge websites and marketing strategies that drive results. Watch our video, download our SEO guide, and get started today.",
+          "HARTECHO creates cutting-edge e-commerce websites and marketing strategies that drive results. Download our SEO guide, and get started today.",
         publisher: {
           "@type": "Organization",
           name: "HARTECHO",

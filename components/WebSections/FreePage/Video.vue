@@ -14,7 +14,7 @@
         <p class="section-text">
           SEO is crucial for e-commerce growth. Our free guide covers the
           powerful strategies we use to achieve superior results. Download it
-          now to see how we give our clients a competitive edge
+          now to see how we give our clients a competitive edge.
         </p>
 
         <div class="button-container">

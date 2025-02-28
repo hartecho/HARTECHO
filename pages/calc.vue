@@ -175,6 +175,119 @@ const targetSpeed = 1.4; // seconds (target page load speed)
 const speedLossFactor = 0.07; // 7% conversion loss per extra second (Google/Akamai research)
 const uiUxSeoBonus = 0.1; // 10% revenue boost from improved UI/UX & SEO
 
+useSeoMeta({
+  // Universal SEO
+  title: "E-Commerce Revenue Calculator || HARTECHO",
+  description:
+    "Discover how much more your e-commerce store could be making with a high-performance, custom-coded website. Use our calculator to estimate revenue gains based on improved site speed and optimization.",
+
+  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+  ogTitle: "E-Commerce Revenue Calculator || HARTECHO",
+  ogDescription:
+    "Slow website speeds could be costing your e-commerce store thousands in lost revenue. Use our free calculator to estimate how much more you could be earning with a custom-coded website.",
+  ogImage: "https://hartecho.com/HARTECHOLogo.webp",
+  ogUrl: "https://hartecho.com/calc",
+  ogType: "website",
+
+  // Twitter/X
+  twitterTitle: "E-Commerce Revenue Calculator || HARTECHO",
+  twitterDescription:
+    "How much is your slow website costing you? Use our free revenue calculator to see how a faster, custom-coded e-commerce store could boost your sales.",
+  twitterImage: "https://hartecho.com/HARTECHOLogo.webp",
+  twitterCard: "summary_large_image",
+
+  // Pinterest
+  pinterestRichPin: "true",
+});
+
+useHead({
+  link: [{ rel: "canonical", href: "https://www.hartecho.com/calc" }],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: "E-Commerce Revenue Calculator || HARTECHO",
+        url: "https://www.hartecho.com/calc",
+        description:
+          "Use our ROI Calculator to estimate how much extra revenue your e-commerce store could generate with faster load times, improved UI/UX, and SEO optimizations. Get data-backed insights from HARTECHO.",
+
+        publisher: {
+          "@type": "Organization",
+          name: "HARTECHO",
+          url: "https://www.hartecho.com",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://www.hartecho.com/HARTECHOLogo.webp",
+            width: 500,
+            height: 500,
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            telephone: "+1-801-793-5456",
+            contactType: "Customer Service",
+            areaServed: "US",
+            availableLanguage: ["English"],
+          },
+        },
+
+        mainEntity: {
+          "@type": "FinancialProduct",
+          name: "E-Commerce ROI Calculator",
+          description:
+            "Estimate your potential revenue gains by improving your website’s speed, UI/UX, and SEO. Our calculator is backed by research from Google, Akamai, Forrester, and eConsultancy.",
+          provider: { "@type": "Organization", name: "HARTECHO" },
+          audience: {
+            "@type": "BusinessAudience",
+            name: "E-Commerce Business Owners",
+          },
+          areaServed: "Global",
+          category: "Business Services",
+          serviceType: "E-Commerce Optimization & Performance Analysis",
+        },
+
+        potentialAction: {
+          "@type": "Action",
+          target: "https://www.hartecho.com/calc",
+          name: "Calculate Your E-Commerce ROI",
+          description:
+            "Enter your current monthly revenue, page speed, and ongoing costs to see how much more you could be making with a high-performance e-commerce store.",
+        },
+
+        image: ["https://www.hartecho.com/HARTECHOLogo.webp"],
+        about: {
+          "@type": "Thing",
+          name: [
+            "E-Commerce Performance Optimization",
+            "SEO-Optimized E-Commerce",
+            "Revenue Growth from Page Speed Improvements",
+            "Conversion Rate Optimization",
+          ],
+        },
+
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.hartecho.com",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "ROI Calculator",
+              item: "https://www.hartecho.com/calc",
+            },
+          ],
+        },
+      }),
+    },
+  ],
+});
+
 // Compute extra seconds above the target speed
 const extraSeconds = computed(() => {
   return currentSpeed.value > targetSpeed

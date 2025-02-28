@@ -229,14 +229,140 @@ async function saveForm() {
 }
 
 useSeoMeta({
+  // Universal SEO
   title: "Custom-Coded E-Commerce Stores || HARTECHO",
-  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
   description:
-    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Fill out this form so we can better understand your unique e-commerce needs.",
+    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Fill out this form so we can better understand your unique e-commerce needs and create a tailored solution for your business.",
+
+  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
   ogDescription:
-    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. Fill out this form so we can better understand your unique e-commerce needs.",
-  ogImage: "/HARTECHOLogo.webp",
-  twitterCard: "/HARTECHOLogo.webp",
+    "HARTECHO specializes in high-performance, custom-coded e-commerce websites designed to drive sales and improve SEO. Get started today with a custom-built online store tailored to your business needs.",
+  ogImage: "https://hartecho.com/HARTECHOLogo.webp",
+  ogUrl: `https://hartecho.com/forms/${form.value._id}`,
+  ogType: "website",
+
+  // Twitter/X
+  twitterTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
+  twitterDescription:
+    "We build high-performance, SEO-optimized e-commerce stores that are custom-coded for your business. Fill out our form to get started today!",
+  twitterImage: "https://hartecho.com/HARTECHOLogo.webp",
+  twitterCard: "summary_large_image",
+
+  // Pinterest
+  pinterestRichPin: "true",
+});
+
+useHead({
+  link: [
+    {
+      rel: "canonical",
+      href: `https://www.hartecho.com/forms/${form.value._id}`,
+    },
+  ],
+  script: [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: form.value.title || "E-Commerce Needs Assessment || HARTECHO",
+        url: `https://www.hartecho.com/forms/${form.value._id}`,
+        description:
+          form.value.description ||
+          "Discover how a custom-coded e-commerce store can improve your business. Answer a few quick questions to get a tailored solution from HARTECHO.",
+        publisher: {
+          "@type": "Organization",
+          name: "HARTECHO",
+          url: "https://www.hartecho.com",
+          logo: {
+            "@type": "ImageObject",
+            url: "https://www.hartecho.com/HARTECHOLogo.webp",
+            width: 500,
+            height: 500,
+          },
+          contactPoint: {
+            "@type": "ContactPoint",
+            telephone: "+1-801-793-5456",
+            contactType: "Customer Service",
+            areaServed: "US",
+            availableLanguage: ["English"],
+          },
+        },
+        mainEntity: {
+          "@type": "Survey",
+          name: form.value.title || "E-Commerce Needs Assessment",
+          description:
+            form.value.description ||
+            "Answer a few quick questions to get a tailored solution from HARTECHO.",
+          provider: { "@type": "Organization", name: "HARTECHO" },
+          audience: {
+            "@type": "BusinessAudience",
+            name: "E-Commerce Business Owners",
+          },
+          areaServed: "Global",
+          educationalUse: "Business Growth",
+          serviceType: "E-Commerce Optimization Consultation",
+          hasPart: form.value.questions.map((question, index) => ({
+            "@type": "Question",
+            name: question.title,
+            text: question.description || "",
+            position: index + 1,
+            acceptedAnswer:
+              question.type === "multiple_choice"
+                ? {
+                    "@type": "Answer",
+                    text: question.choices
+                      ?.map((choice) => choice.label)
+                      .join(", "),
+                  }
+                : undefined,
+          })),
+        },
+        potentialAction: [
+          {
+            "@type": "Action",
+            target: `https://www.hartecho.com/forms/${form.value._id}`,
+            name: "Complete the E-Commerce Needs Assessment",
+            description:
+              "Answer a few questions to get a tailored e-commerce solution from HARTECHO.",
+          },
+        ],
+        image: ["https://www.hartecho.com/HARTECHOLogo.webp"],
+        about: {
+          "@type": "Thing",
+          name: [
+            "E-Commerce Optimization",
+            "Custom Store Development",
+            "SEO and Performance Enhancement",
+          ],
+        },
+        breadcrumb: {
+          "@type": "BreadcrumbList",
+          itemListElement: [
+            {
+              "@type": "ListItem",
+              position: 1,
+              name: "Home",
+              item: "https://www.hartecho.com",
+            },
+            {
+              "@type": "ListItem",
+              position: 2,
+              name: "Forms",
+              item: "https://www.hartecho.com/forms",
+            },
+            {
+              "@type": "ListItem",
+              position: 3,
+              name: form.value.title || "E-Commerce Needs Assessment",
+              item: `https://www.hartecho.com/forms/${form.value._id}`,
+            },
+          ],
+        },
+      }),
+    },
+  ],
 });
 
 /**

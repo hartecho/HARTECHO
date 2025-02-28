@@ -57,14 +57,28 @@
   
   <script setup>
 useSeoMeta({
+  // Universal SEO
   title: "Privacy Policy || HARTECHO",
-  ogTitle: "Privacy Policy || HARTECHO",
   description:
-    "Read HARTECHO's privacy policy to understand how we collect, use, and protect your data. Transparency and data security are our priorities.",
+    "Learn how HARTECHO collects, uses, and protects your personal data. We prioritize transparency and security to ensure your information is handled with care.",
+
+  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+  ogTitle: "Privacy Policy || HARTECHO",
   ogDescription:
-    "Read HARTECHO's privacy policy to understand how we collect, use, and protect your data. Transparency and data security are our priorities.",
-  ogImage: "/HARTECHOLogo.webp",
-  twitterCard: "/HARTECHOLogo.webp",
+    "Read HARTECHO's privacy policy to understand how we collect, use, and safeguard your data. Your privacy and security are our top priorities.",
+  ogImage: "/HARTECHOLogo.webp", // Image remains in the root public folder
+  ogUrl: "https://hartecho.com/privacy",
+  ogType: "website",
+
+  // Twitter/X
+  twitterTitle: "Privacy Policy || HARTECHO",
+  twitterDescription:
+    "Your privacy matters. Read HARTECHO’s policy on data collection, security, and transparency.",
+  twitterImage: "/HARTECHOLogo.webp", // Ensuring correct public path usage
+  twitterCard: "summary_large_image",
+
+  // Pinterest
+  pinterestRichPin: "true",
 });
 
 // Structured Data

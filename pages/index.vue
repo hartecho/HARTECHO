@@ -149,14 +149,28 @@ onMounted(() => {
 });
 
 useSeoMeta({
-  title: "Custom-Coded E-Commerce Stores || HARTECHO",
-  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
+  // Universal SEO
+  title: "High-Performance Custom E-Commerce Stores || HARTECHO",
   description:
-    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. We optimize for performance, SEO, and conversions to help your online store succeed.",
+    "Boost your e-commerce store’s performance, SEO rankings, and conversions with a fully custom-coded website. HARTECHO builds high-speed, scalable, and SEO-optimized online stores that drive real results.",
+
+  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+  ogTitle: "High-Performance Custom E-Commerce Stores || HARTECHO",
   ogDescription:
-    "HARTECHO specializes in building custom-coded e-commerce websites using cutting-edge technologies. We optimize for performance, SEO, and conversions to help your online store succeed.",
-  ogImage: "/HARTECHOLogo.webp",
-  twitterCard: "/HARTECHOLogo.webp",
+    "Tired of slow, templated e-commerce sites? HARTECHO creates **custom-coded online stores** optimized for performance, SEO, and higher conversions. Stand out, rank higher, and grow your revenue today!",
+  ogImage: "https://hartecho.com/HARTECHOLogo.webp",
+  ogUrl: "https://hartecho.com",
+  ogType: "website",
+
+  // Twitter/X
+  twitterTitle: "High-Performance Custom E-Commerce Stores || HARTECHO",
+  twitterDescription:
+    "HARTECHO builds **lightning-fast, fully optimized e-commerce stores** designed for better SEO and higher conversions. Stop losing sales to slow load times—get a custom-coded website today!",
+  twitterImage: "https://hartecho.com/HARTECHOLogo.webp",
+  twitterCard: "summary_large_image",
+
+  // Pinterest
+  pinterestRichPin: "true",
 });
 
 useHead({
