@@ -18,12 +18,6 @@
         </p>
 
         <div class="button-container">
-          <!-- <NuxtLink
-            to="/forms/67661cba3a14e729ae1777a1"
-            class="store-button"
-            @click="handleGetNewStore"
-            >Get My New Store</NuxtLink
-          > -->
           <div class="pdf-download-container">
             <a
               class="pdf-download-button"
@@ -40,7 +34,14 @@
 
       <!-- Right Video -->
       <div class="video-container">
-        <video autoplay muted loop class="main-video">
+        <video
+          autoplay
+          muted
+          loop
+          playsinline
+          webkit-playsinline
+          class="main-video"
+        >
           <source src="/3dEmit.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video>
@@ -57,15 +58,6 @@ const isLocalhost = () =>
   process.client &&
   (window.location.hostname === "localhost" ||
     window.location.hostname === "127.0.0.1");
-
-// Function to handle "Get My New Store" click with pixel tracking
-const handleGetNewStore = (event) => {
-  const { $fbq } = useNuxtApp();
-  if (!isLocalhost()) {
-    $fbq("track", "Lead", { content_name: "Get My New Store" });
-  }
-  // Navigation happens automatically via NuxtLink
-};
 
 // Function to handle SEO guide download with pixel tracking
 const handleDownloadSEOGuide = (event) => {
@@ -95,8 +87,10 @@ const handleDownloadSEOGuide = (event) => {
   flex-direction: row;
 }
 
+/* Added min-width: 0 to allow the container to shrink as needed */
 .info-container {
   flex: 1;
+  min-width: 0;
   color: #ffffff;
   font-family: "Roboto", sans-serif;
   text-align: left;
@@ -188,13 +182,13 @@ img {
 .main-video {
   width: 100%;
   height: auto;
-  /* border-radius: 10px; */
   box-shadow: 15px 15px 10px rgba(0, 0, 0, 1);
 }
 
 @media (max-width: 1024px) {
   .video {
     padding: 0;
+    margin-top: 5rem;
   }
 
   .content-container {
@@ -204,8 +198,10 @@ img {
   }
 
   .info-container {
-    padding: 0;
+    padding: 1rem;
     text-align: center;
+    /* min-width is already set above */
+    width: auto;
   }
 
   .section-title {
@@ -263,6 +259,11 @@ img {
 
   .video-container {
     width: 100%;
+  }
+
+  .pdf-download-button {
+    font-size: 0.95rem;
+    width: 250px;
   }
 }
 </style>

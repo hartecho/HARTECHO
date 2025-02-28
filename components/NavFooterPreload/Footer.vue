@@ -351,7 +351,7 @@ const handleEmailSubmit = async () => {
 
 .more-resources h2 {
   font-size: 2.2rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   font-weight: 700;
   color: #fff;
 }
@@ -363,7 +363,7 @@ const handleEmailSubmit = async () => {
 }
 
 .more-resources li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .more-resources a {
@@ -426,6 +426,11 @@ form {
 
   .signup-offer {
     padding-top: 2rem;
+    width: 100%;
+  }
+
+  .more-resources {
+    margin-bottom: 5rem;
   }
 
   .background-container {
