@@ -57,7 +57,8 @@ export default defineNuxtConfig({
       TEST_KLAVIYO_PUBLIC_KEY: process.env.TEST_KLAVIYO_PUBLIC_KEY,
       TEST_KLAVIYO_WAITLIST_ID: process.env.TEST_KLAVIYO_WAITLIST_ID,
       KLAVIYO_PUBLIC_KEY: process.env.KLAVIYO_PUBLIC_KEY,
-      KLAVIYO_WAITLIST_ID: process.env.KLAVIYO_WAITLIST_ID
+      KLAVIYO_WAITLIST_ID: process.env.KLAVIYO_WAITLIST_ID,
+      META_PIXEL_ID: process.env.META_PIXEL_ID
     }
   },
   compatibilityDate: '2024-07-10',

@@ -11,6 +11,8 @@ export default defineNuxtPlugin((nuxtApp) => {
 
   // Initialize the Facebook Pixel
   const initFacebookPixel = () => {
+    if (window.location.hostname !== "localhost" &&
+      window.location.hostname !== "127.0.0.1") {
     !(function (f, b, e, v, n, t, s) {
       if (f.fbq) return;
       n = f.fbq = function () {
@@ -27,9 +29,13 @@ export default defineNuxtPlugin((nuxtApp) => {
       s = b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t, s);
     })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
-
-    fbq('init', '1055513409623776');
+    const pixelID = useRuntimeConfig().public.META_PIXEL_ID;
+    console.log('Pixel ID: ' + pixelID);
+    fbq('init', pixelID);
     fbq('track', 'PageView');
+  } else {
+    console.log("On localhost. Pixel not loaded.");
+  }
   };
 
   // Load the pixel when the browser is idle
