@@ -30,7 +30,7 @@ export default defineNuxtPlugin((nuxtApp) => {
       s.parentNode.insertBefore(t, s);
     })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
     const pixelID = useRuntimeConfig().public.META_PIXEL_ID;
-    console.log('Pixel ID: ' + pixelID);
+    // console.log('Pixel ID: ' + pixelID);
     fbq('init', pixelID);
     fbq('track', 'PageView');
   } else {
