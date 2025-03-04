@@ -75,7 +75,8 @@ const submitEmail = async () => {
 
   try {
     // Track the "Lead" event with Klaviyo
-    $klaviyo("track", "Lead", {
+    $klaviyo("track", "Joined Waitlist", {
+      source: "Popup",
       content_name: "E-commerce Store Waitlist Signup",
       email: email.value,
     });

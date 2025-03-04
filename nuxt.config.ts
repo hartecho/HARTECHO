@@ -52,6 +52,7 @@ export default defineNuxtConfig({
   runtimeConfig: {    
     DB_URI: process.env.DB_URI,
     TEST_KLAVIYO_PRIVATE_KEY: process.env.TEST_KLAVIYO_PRIVATE_KEY,
+    KLAVIYO_PRIVATE_KEY: process.env.KLAVIYO_PRIVATE_KEY,
 
     public: {
       TEST_KLAVIYO_PUBLIC_KEY: process.env.TEST_KLAVIYO_PUBLIC_KEY,

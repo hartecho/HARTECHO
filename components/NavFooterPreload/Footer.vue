@@ -138,7 +138,8 @@ const handleEmailSubmit = async () => {
 
   try {
     // Track the "Lead" event with Klaviyo
-    $klaviyo("track", "Lead", {
+    $klaviyo("track", "Joined Waitlist", {
+      source: "Footer",
       content_name: "E-commerce Store Waitlist Signup",
       email: email.value,
     });
