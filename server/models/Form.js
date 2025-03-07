@@ -14,7 +14,7 @@ const questionSchema = new mongoose.Schema({
     enum: [
       'multiple_choice',
       'short_text',
-      'long-text',
+      'long_text',
       'email',
       'phone_number',
       'first_name',  // Added for first name

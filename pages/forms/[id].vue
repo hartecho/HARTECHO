@@ -50,13 +50,29 @@
         >
           <input
             type="text"
-            v-model="shortTextAnswer"
+            v-model="textAnswer"
             :placeholder="currentQuestion.placeholder || 'Your answer...'"
             :class="{ error: hasError }"
             @input="clearError"
             @keyup.enter="validateAndNext"
             class="text-input"
           />
+        </div>
+
+        <!-- Long Text -->
+        <div
+          v-else-if="currentQuestion.type === 'long_text'"
+          class="text-answer"
+        >
+          <textarea
+            type="text"
+            v-model="textAnswer"
+            :placeholder="currentQuestion.placeholder || 'Your answer...'"
+            :class="{ error: hasError }"
+            @input="clearError"
+            @keyup.enter="validateAndNext"
+            class="long-text-input"
+          ></textarea>
         </div>
 
         <!-- First Name -->
@@ -66,7 +82,7 @@
         >
           <input
             type="text"
-            v-model="shortTextAnswer"
+            v-model="textAnswer"
             :placeholder="currentQuestion.placeholder || 'Your first name...'"
             :class="{ error: hasError }"
             @input="clearError"
@@ -82,7 +98,7 @@
         >
           <input
             type="text"
-            v-model="shortTextAnswer"
+            v-model="textAnswer"
             :placeholder="currentQuestion.placeholder || 'Your last name...'"
             :class="{ error: hasError }"
             @input="clearError"
@@ -95,7 +111,7 @@
         <div v-else-if="currentQuestion.type === 'email'" class="text-answer">
           <input
             type="email"
-            v-model="shortTextAnswer"
+            v-model="textAnswer"
             placeholder="Enter your email"
             :class="{ error: hasError }"
             @input="clearError"
@@ -111,7 +127,7 @@
         >
           <input
             type="tel"
-            v-model="shortTextAnswer"
+            v-model="textAnswer"
             placeholder="Enter your phone number"
             :class="{ error: hasError }"
             @input="clearError"
@@ -178,7 +194,7 @@ const router = useRouter();
 const currentQuestionIndex = ref(0);
 const formResponses = ref([]); // local array to store all answers
 const selectedAnswers = ref([]); // for multiple-choice answers
-const shortTextAnswer = ref(""); // for text, email, phone, etc.
+const textAnswer = ref(""); // for text, email, phone, etc.
 const hasError = ref(false);
 const errorMessage = ref("");
 const formResponseId = ref(null); // will hold the created record’s ID
@@ -383,7 +399,7 @@ async function savePartialResponse() {
   if (!formResponseId.value) {
     // No record exists yet, so create one.
     try {
-      console.log("Creating new form response via POST");
+      // console.log("Creating new form response via POST");
       const response = await $fetch("/api/formResponses", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -391,7 +407,7 @@ async function savePartialResponse() {
       });
       if (response && response._id) {
         formResponseId.value = response._id;
-        console.log("Form response created with id:", formResponseId.value);
+        // console.log("Form response created with id:", formResponseId.value);
       }
     } catch (error) {
       console.error("Error creating form response:", error);
@@ -399,7 +415,7 @@ async function savePartialResponse() {
   } else {
     // Update the existing record using PUT.
     const updateUrl = `/api/formResponses/${formResponseId.value}`;
-    console.log("Updating form response via PUT at:", updateUrl);
+    // console.log("Updating form response via PUT at:", updateUrl);
     try {
       await $fetch(updateUrl, {
         method: "PUT",
@@ -451,7 +467,7 @@ const isAnswerValid = computed(() => {
       ? selectedAnswers.value.length > 0
       : selectedAnswers.value.length === 1;
   }
-  return shortTextAnswer.value.trim().length > 0;
+  return textAnswer.value.trim().length > 0;
 });
 
 // Helpers for multiple-choice questions
@@ -531,7 +547,7 @@ function storeCurrentAnswer() {
     response:
       currentQuestion.value.type === "multiple_choice"
         ? [...selectedAnswers.value]
-        : shortTextAnswer.value.trim(),
+        : textAnswer.value.trim(),
   };
 
   const existingIndex = formResponses.value.findIndex(
@@ -557,7 +573,7 @@ async function submitResponses(responseType) {
   const payload = JSON.stringify(payloadObj);
 
   if (!formResponseId.value) {
-    console.log("Final submission: creating new record via POST");
+    // console.log("Final submission: creating new record via POST");
     try {
       const response = await $fetch("/api/formResponses", {
         method: "POST",
@@ -572,7 +588,7 @@ async function submitResponses(responseType) {
     }
   } else {
     const updateUrl = `/api/formResponses/${formResponseId.value}`;
-    console.log("Final submission: updating record via PUT at:", updateUrl);
+    // console.log("Final submission: updating record via PUT at:", updateUrl);
     try {
       await $fetch(updateUrl, {
         method: "PUT",
@@ -592,7 +608,7 @@ function runLocalValidations() {
 
   if (currentQuestion.value.type === "email") {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(shortTextAnswer.value)) {
+    if (!emailRegex.test(textAnswer.value)) {
       hasError.value = true;
       errorMessage.value = "Please enter a valid email address.";
       return false;
@@ -600,7 +616,7 @@ function runLocalValidations() {
   }
   if (currentQuestion.value.type === "phone_number") {
     const phoneRegex = /^\d{10}$/;
-    if (!phoneRegex.test(shortTextAnswer.value)) {
+    if (!phoneRegex.test(textAnswer.value)) {
       hasError.value = true;
       errorMessage.value = "Please enter a valid 10-digit phone number.";
       return false;
@@ -645,14 +661,14 @@ function loadPreviousAnswer() {
   if (existingResp) {
     if (existingResp.questionType === "multiple_choice") {
       selectedAnswers.value = existingResp.response;
-      shortTextAnswer.value = "";
+      textAnswer.value = "";
     } else {
-      shortTextAnswer.value = existingResp.response;
+      textAnswer.value = existingResp.response;
       selectedAnswers.value = [];
     }
   } else {
     selectedAnswers.value = [];
-    shortTextAnswer.value = "";
+    textAnswer.value = "";
   }
 }
 
@@ -843,6 +859,35 @@ emit("hide-loading");
 
 /* Error Styles */
 .text-input.error {
+  border-color: #e74c3c;
+  background-color: #fdecea;
+}
+
+/* Text Input */
+.long-text-input {
+  width: 100%;
+  /* height: 5rem; */
+  padding: 0.75rem;
+  font-size: 1.2rem;
+  color: #333;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  outline: none;
+}
+.long-text-input:focus {
+  background-color: #eaf4fc;
+  border-color: #3498db;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+.long-text-input::placeholder {
+  color: #888;
+  font-style: italic;
+}
+
+/* Error Styles */
+.long-text-input.error {
   border-color: #e74c3c;
   background-color: #fdecea;
 }

@@ -309,7 +309,7 @@ const deleteForm = async () => {
       method: "DELETE",
     });
 
-    console.log("Delete response:", response);
+    // console.log("Delete response:", response);
 
     // Remove the deleted form from the forms list
     forms.value = forms.value.filter((form) => form._id !== formId);

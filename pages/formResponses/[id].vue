@@ -248,6 +248,7 @@ const { data: formResponses } = await useFetch(
 const typeConfig = {
   multiple_choice: { color: "#3498db", icon: "🔢" },
   short_text: { color: "#2ecc71", icon: "✍️" },
+  long_text: { color: "#5e88aa", icon: "✍️" },
   email: { color: "#e67e22", icon: "📧" },
   phone_number: { color: "#9b59b6", icon: "📞" },
   first_name: { color: "#2ecc71", icon: "📝" },
@@ -278,7 +279,7 @@ const getName = (response) => {
   const lastNameRes = response.responses.find(
     (res) => res.questionType === "last_name"
   );
-  console.log(JSON.stringify(firstNameRes), JSON.stringify(lastNameRes));
+  // console.log(JSON.stringify(firstNameRes), JSON.stringify(lastNameRes));
   if (firstNameRes && lastNameRes) {
     return `${firstNameRes.response} ${lastNameRes.response}`;
   }
@@ -697,10 +698,10 @@ h3 {
 .response-cell.email-cell,
 .header-cell.email-cell {
   position: sticky;
-  left: 45px;
+  left: 50px;
   z-index: 2;
   background-color: #f9fafb;
-  min-width: 250px;
+  min-width: 200px;
   font-weight: bold;
   text-align: left;
   box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
@@ -709,6 +710,8 @@ h3 {
 .header-cell:first-child {
   position: sticky;
   left: 0;
+  min-width: 50px;
+  width: 50px;
   z-index: 4;
   background-color: #f3f4f6;
 }
@@ -716,8 +719,10 @@ h3 {
 .response-cell.checkbox-cell {
   position: sticky;
   left: 0;
+  min-width: 50px;
+  width: 50px;
   z-index: 3;
-  background-color: #f9fafb;
+  background-color: #f3f4f6;
   box-shadow: 2px 0px 4px rgba(0, 0, 0, 0.1);
 }
 

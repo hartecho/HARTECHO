@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
     const body = await readBody(event);
     const { ids } = body;
 
-    console.log("ids: " + ids);
+    // console.log("ids: " + ids);
 
     // Validate that 'ids' is provided and is an array
     if (!ids || !Array.isArray(ids)) {
