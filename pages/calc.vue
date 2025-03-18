@@ -13,34 +13,73 @@
     <!-- Main Calculator Card -->
     <div class="calculator-card">
       <div class="input-section">
-        <h2>Enter Your Current Store Metrics</h2>
+        <h2>Enter Your Store Metrics</h2>
         <div class="input-group">
-          <label for="revenue">Current Monthly Revenue ($):</label>
+          <label for="mobileFCP">Mobile First Contentful Paint (sec):</label>
+          <input
+            id="mobileFCP"
+            type="number"
+            v-model.number="mobileFCP"
+            step="0.1"
+            placeholder="e.g., 3.5"
+          />
+          <small class="description">
+            Time until first content is rendered on mobile devices.
+          </small>
+        </div>
+        <div class="input-group">
+          <label for="mobileLCP">Mobile Largest Contentful Paint (sec):</label>
+          <input
+            id="mobileLCP"
+            type="number"
+            v-model.number="mobileLCP"
+            step="0.1"
+            placeholder="e.g., 4.8"
+          />
+          <small class="description">
+            Time until the largest element is rendered on mobile.
+          </small>
+        </div>
+        <div class="input-group">
+          <label for="desktopFCP">Desktop First Contentful Paint (sec):</label>
+          <input
+            id="desktopFCP"
+            type="number"
+            v-model.number="desktopFCP"
+            step="0.1"
+            placeholder="e.g., 1.2"
+          />
+          <small class="description">
+            Time until first content is rendered on desktop devices.
+          </small>
+        </div>
+        <div class="input-group">
+          <label for="desktopLCP"
+            >Desktop Largest Contentful Paint (sec):</label
+          >
+          <input
+            id="desktopLCP"
+            type="number"
+            v-model.number="desktopLCP"
+            step="0.1"
+            placeholder="e.g., 2.5"
+          />
+          <small class="description">
+            Time until the largest element is rendered on desktop.
+          </small>
+        </div>
+        <div class="input-group">
+          <label for="revenue">Current Annual Revenue ($):</label>
           <input
             id="revenue"
             type="number"
             v-model.number="currentRevenue"
-            placeholder="e.g., 10000"
+            placeholder="e.g., 500000"
           />
           <small class="description">
-            This is your total revenue in a typical month.
+            This is your total revenue for the past year.
           </small>
         </div>
-
-        <div class="input-group">
-          <label for="speed">Current Page Load Speed (seconds):</label>
-          <input
-            id="speed"
-            type="number"
-            v-model.number="currentSpeed"
-            step="0.1"
-            placeholder="e.g., 5"
-          />
-          <small class="description">
-            How many seconds does your current site take to load?
-          </small>
-        </div>
-
         <div class="input-group">
           <label for="ongoing">Monthly Ongoing Costs ($):</label>
           <input
@@ -50,155 +89,253 @@
             placeholder="e.g., 500"
           />
           <small class="description">
-            These are the ongoing costs to maintain your NEW store, including
-            tax APIs, database hosting, AWS, etc.
+            Recurring monthly costs (hosting, APIs, etc.) to be subtracted.
           </small>
         </div>
       </div>
 
-      <div v-if="currentRevenue && currentSpeed" class="results-section">
+      <div v-if="resultsReady" class="results-section">
         <h2>Estimated Results</h2>
         <div class="result-item">
-          <strong>Revenue Increase from Speed Improvements:</strong>
-          <span>${{ speedRevenueIncrease.toFixed(2) }}</span>
+          <strong>Projected Annual Revenue Increase:</strong>
+          <span>{{ formatCurrency(annualRevenueIncrease) }}</span>
         </div>
         <div class="result-item">
-          <strong>Revenue Increase from UI/UX & SEO Enhancements:</strong>
-          <span>${{ uiUxSeoRevenueIncrease.toFixed(2) }}</span>
-        </div>
-        <div class="result-item">
-          <strong>Total Estimated Monthly Revenue:</strong>
-          <span>${{ estimatedRevenue.toFixed(2) }}</span>
-        </div>
-        <div class="result-item">
-          <strong>Total Extra Monthly Revenue:</strong>
-          <span>${{ extraRevenue.toFixed(2) }}</span>
-        </div>
-        <div class="result-item">
-          <strong>Net Extra Revenue (after ongoing costs):</strong>
-          <span>${{ netExtraRevenue.toFixed(2) }}</span>
+          <strong>Net Annual Revenue Increase (after ongoing costs):</strong>
+          <span>{{ formatCurrency(netAnnualRevenueIncrease) }}</span>
         </div>
         <div class="result-item">
           <strong>Estimated Payback Period:</strong>
-          <span v-if="netExtraRevenue > 0">
-            {{ paybackPeriod.toFixed(1) }} months
+          <span v-if="netAnnualRevenueIncrease > 0">
+            {{ paybackPeriodMonths }} months
           </span>
           <span v-else>
-            Not applicable (Net Extra Revenue is below ongoing costs)
+            Not applicable (Net Revenue Increase is below ongoing costs)
           </span>
         </div>
       </div>
     </div>
 
-    <!-- Full-Width Calculation Details Section -->
+    <!-- Full-Width Calculation Details, Methodology & Sources Section -->
     <section class="calculation-details">
-      <h2>Calculation Details & Sources</h2>
-
+      <h2>Calculation Details, Methodology & Sources</h2>
       <p>
-        <strong>Target Page Load Speed:</strong> We target a load speed of
-        <em>1.4 seconds</em> after the custom upgrade. This goal is chosen
-        because studies have shown that faster load times lead to better user
-        engagement, and we can typically guarantee this time for most stores.
+        <strong>Speed Metrics:</strong> We use Google Lighthouse metrics,
+        including <em>First Contentful Paint (FCP)</em> and
+        <em>Largest Contentful Paint (LCP)</em> for both mobile and desktop.
+        Ideal targets are set to <em>1.0 second for FCP</em> and
+        <em>2.5 seconds for LCP</em>. Research shows that faster FCP/LCP results
+        in higher conversion rates.
       </p>
-
       <p>
-        <strong>Speed Loss Factor:</strong> Research by Google and Akamai
-        indicates that for every extra second beyond 1.4 seconds, conversions
-        can drop by about <em>7%</em>. For example, if your site currently loads
-        in 5 seconds, the extra 3.6 seconds imply a revenue multiplier
-        calculated as: 1 + (3.6 × 0.07).
+        <strong>Speed Conversion Lift:</strong> Based on studies, a full
+        improvement in speed can boost conversions by up to <em>30%</em>. We
+        weight mobile and desktop contributions (mobile ~55%, desktop ~45%).
       </p>
-
       <p>
-        <strong>UI/UX & SEO Bonus:</strong> Independent studies from Forrester
-        and eConsultancy suggest that improved design, usability, and SEO can
-        yield roughly a <em>10% revenue uplift</em>. This reflects better
-        customer engagement and higher search rankings.
+        <strong>UI/UX & SEO Impact:</strong> Enhanced UI/UX can add
+        approximately <em>15% conversion uplift</em>, while SEO improvements
+        drive an estimated <em>10% increase in traffic</em>, compounding overall
+        revenue growth.
       </p>
-
       <p>
-        <strong>Speed Multiplier:</strong> We calculate the speed multiplier
-        using the formula: <em>1 + ((Current Speed - 1.4) × 0.07)</em>. For
-        example, at 5 seconds, that’s 1 + (3.6 × 0.07) ≈ 1.252.
+        <strong>Net Revenue Increase & Payback Period:</strong> The extra annual
+        revenue is calculated by applying these multipliers to your current
+        revenue, then subtracting annualized ongoing costs. The payback period
+        divides the $68,000 investment by the net annual revenue increase and
+        converts the result to months.
       </p>
-
-      <p>
-        <strong>UI/UX Multiplier:</strong> We use a flat multiplier of
-        <em>1.10</em> to represent the 10% boost from improved design and SEO.
-      </p>
-
-      <p>
-        <strong>Total Multiplier:</strong> The overall revenue multiplier is the
-        product of the Speed Multiplier and the UI/UX Multiplier. This
-        multiplier is applied to your current revenue to estimate your potential
-        monthly revenue after upgrades.
-      </p>
-
-      <p>
-        <strong>Extra Revenue:</strong> The extra revenue is determined by
-        subtracting 1 from the Total Multiplier and multiplying by your current
-        revenue.
-      </p>
-
-      <p>
-        <strong>Net Extra Revenue:</strong> We calculate Net Extra Revenue by
-        subtracting your Monthly Ongoing Costs from the Extra Revenue. This
-        represents the additional monthly profit available to help recoup the
-        upgrade investment.
-      </p>
-
-      <p>
-        <strong>Payback Period:</strong> Finally, the payback period is
-        estimated by dividing a <em>$20,000</em> one-time investment by the Net
-        Extra Revenue. This tells you how many months it will take to recoup the
-        investment through increased revenue.
-      </p>
-
       <p class="disclaimer">
-        <strong>Disclaimer:</strong> The estimates provided here are based on
-        industry research and reputable sources including Google, Akamai,
-        Forrester, and eConsultancy. Actual results may vary depending on a wide
-        range of factors.
+        <strong>Disclaimer:</strong> Estimates are based on data from reputable
+        sources such as Google, Akamai, Forrester, and eConsultancy. Actual
+        results may vary depending on your current performance, market
+        conditions, and implementation quality.
       </p>
+      <div class="sources">
+        <h3>Sources</h3>
+        <ul>
+          <li>
+            <a
+              href="https://scoop.market.us/cro-statistics/#:~:text=%2A%20A%20one,for%20websites%20without"
+              target="_blank"
+              >CRO Statistics 2025 By Best Conversion, Growth, Rate</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.digitalsilk.com/digital-trends/website-speed-statistics/#:~:text=4.%2053,wouldn%E2%80%99t%20wait%20over%205%20seconds"
+              target="_blank"
+              >Top 40 Website Speed Statistics</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://blog.hubspot.com/marketing/page-load-time-conversion-rates#:~:text=Vodafone%20recently%20conducted%20an%20A%2FB,more%20sales"
+              target="_blank"
+              >11 Website Page Load Time Statistics [+ How to Increase
+              Conversion Rate]</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.conductor.com/academy/page-speed-resources/"
+              target="_blank"
+              >Why Page Speed Matters: 10 Case Studies Show How</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://wp-rocket.me/blog/website-load-time-speed-statistics/#:~:text=4,in%205%20seconds%20or%20less"
+              target="_blank"
+              >Website Load Time & Speed Statistics: Is Your Site Fast
+              Enough?</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://uxcam.com/blog/ux-statistics/#:~:text=What%E2%80%99s%20the%20ROI%20of%20UX%3F"
+              target="_blank"
+              >50+ Powerful UX Statistics To Impress Stakeholders 2025</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://www.usertesting.com/forrester-total-economic-impact-usertesting-form#:~:text=Forrester%E2%80%99s%20analysis%20showed%20that%20a,Human%20Insight%20Platform%20would%20achieve"
+              target="_blank"
+              >Forrester Study - The Total Economic Impact™ of the UserTesting
+              Human Insight Platform</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://rocketagency.com.au/case-studies/bio-molecular-systems#:~:text=,within%20their%20target%20audience%20globally"
+              target="_blank"
+              >How BMS Increased Web Traffic Exponentially Using Search</a
+            >
+          </li>
+        </ul>
+      </div>
     </section>
   </div>
 </template>
-  
-  <script setup>
+
+<script setup>
 import { ref, computed } from "vue";
+import { useHead, useSeoMeta } from "#imports";
 
-// User inputs
-const currentRevenue = ref(0);
-const currentSpeed = ref(0);
-const ongoingCosts = ref(500); // Monthly ongoing costs (e.g., tax API, database hosting, AWS, etc.)
+// User Inputs
+const mobileFCP = ref(0);
+const mobileLCP = ref(0);
+const desktopFCP = ref(0);
+const desktopLCP = ref(0);
+const currentRevenue = ref(0); // Annual revenue
+const ongoingCosts = ref(500); // Monthly ongoing costs
 
-// Constants for our model
-const targetSpeed = 1.4; // seconds (target page load speed)
-const speedLossFactor = 0.07; // 7% conversion loss per extra second (Google/Akamai research)
-const uiUxSeoBonus = 0.1; // 10% revenue boost from improved UI/UX & SEO
+// Benchmarks for performance metrics
+const targetFCP = 1.0;
+const targetLCP = 2.5;
 
+// Check if all inputs are provided
+const resultsReady = computed(() => {
+  return (
+    mobileFCP.value > 0 &&
+    mobileLCP.value > 0 &&
+    desktopFCP.value > 0 &&
+    desktopLCP.value > 0 &&
+    currentRevenue.value > 0
+  );
+});
+
+// Helper function to calculate improvement fraction
+function improvementFraction(input, target) {
+  return input > target ? (input - target) / input : 0;
+}
+
+// Calculate improvement fractions for each metric
+const mobileFCPimp = computed(() =>
+  improvementFraction(mobileFCP.value, targetFCP)
+);
+const mobileLCPimp = computed(() =>
+  improvementFraction(mobileLCP.value, targetLCP)
+);
+const desktopFCPimp = computed(() =>
+  improvementFraction(desktopFCP.value, targetFCP)
+);
+const desktopLCPimp = computed(() =>
+  improvementFraction(desktopLCP.value, targetLCP)
+);
+
+// Weights: Mobile (55%) and Desktop (45%)
+const mobileWeight = 0.55;
+const desktopWeight = 0.45;
+
+// Conversion lift from speed improvements (max 30% boost if fully optimized)
+const mobileSpeedLift = computed(
+  () => ((mobileFCPimp.value + mobileLCPimp.value) / 2) * 0.3
+);
+const desktopSpeedLift = computed(
+  () => ((desktopFCPimp.value + desktopLCPimp.value) / 2) * 0.3
+);
+const speedConvLift = computed(
+  () =>
+    mobileSpeedLift.value * mobileWeight +
+    desktopSpeedLift.value * desktopWeight
+);
+
+// Additional multipliers from UX and SEO
+const uxConversionLift = 0.15; // 15% conversion increase from better UI/UX
+const seoTrafficLift = 0.1; // 10% traffic increase from improved SEO
+
+// Total revenue multiplier
+const totalMultiplier = computed(() => {
+  return (
+    (1 + speedConvLift.value) * (1 + uxConversionLift) * (1 + seoTrafficLift)
+  );
+});
+
+// Calculate new annual revenue and extra revenue gained
+const newAnnualRevenue = computed(
+  () => currentRevenue.value * totalMultiplier.value
+);
+const annualRevenueIncrease = computed(
+  () => newAnnualRevenue.value - currentRevenue.value
+);
+
+// Subtract annualized ongoing costs from extra revenue
+const annualOngoingCosts = computed(() => ongoingCosts.value * 12);
+const netAnnualRevenueIncrease = computed(
+  () => annualRevenueIncrease.value - annualOngoingCosts.value
+);
+
+// Payback period in months (if net gain is positive)
+const paybackPeriodMonths = computed(() => {
+  if (netAnnualRevenueIncrease.value <= 0) return "N/A";
+  const yearsToPayback = 68000 / netAnnualRevenueIncrease.value;
+  return Math.ceil(yearsToPayback * 12);
+});
+
+// Utility to format numbers as currency
+function formatCurrency(value) {
+  if (isNaN(value)) return "$0";
+  return `$${value.toLocaleString(undefined, { maximumFractionDigits: 0 })}`;
+}
+
+// SEO & Head meta configuration
 useSeoMeta({
-  // Universal SEO
   title: "E-Commerce Revenue Calculator || HARTECHO",
   description:
-    "Discover how much more your e-commerce store could be making with a high-performance, custom-coded website. Use our calculator to estimate revenue gains based on improved site speed and optimization.",
-
-  // Open Graph (Facebook, Instagram, LinkedIn, WhatsApp, Discord, Slack)
+    "Estimate the ROI for a custom-coded e-commerce store using the latest Google Lighthouse metrics (FCP, LCP) and research from Google, Akamai, Forrester, and eConsultancy.",
   ogTitle: "E-Commerce Revenue Calculator || HARTECHO",
   ogDescription:
-    "Slow website speeds could be costing your e-commerce store thousands in lost revenue. Use our free calculator to estimate how much more you could be earning with a custom-coded website.",
+    "Discover how faster site speed, improved UI/UX, and better SEO can boost your e-commerce revenue and shorten the payback period for your custom-coded store.",
   ogImage: "https://hartecho.com/HARTECHOLogo.webp",
   ogUrl: "https://hartecho.com/calc",
   ogType: "website",
-
-  // Twitter/X
   twitterTitle: "E-Commerce Revenue Calculator || HARTECHO",
   twitterDescription:
-    "How much is your slow website costing you? Use our free revenue calculator to see how a faster, custom-coded e-commerce store could boost your sales.",
+    "See how improvements in site speed, UX, and SEO can increase your e-commerce revenue. Use our calculator to estimate your ROI.",
   twitterImage: "https://hartecho.com/HARTECHOLogo.webp",
   twitterCard: "summary_large_image",
-
-  // Pinterest
   pinterestRichPin: "true",
 });
 
@@ -213,8 +350,7 @@ useHead({
         name: "E-Commerce Revenue Calculator || HARTECHO",
         url: "https://www.hartecho.com/calc",
         description:
-          "Use our ROI Calculator to estimate how much extra revenue your e-commerce store could generate with faster load times, improved UI/UX, and SEO optimizations. Get data-backed insights from HARTECHO.",
-
+          "Estimate your potential revenue gains by improving your website’s speed, UX, and SEO using our ROI calculator, based on the latest research.",
         publisher: {
           "@type": "Organization",
           name: "HARTECHO",
@@ -233,12 +369,11 @@ useHead({
             availableLanguage: ["English"],
           },
         },
-
         mainEntity: {
           "@type": "FinancialProduct",
           name: "E-Commerce ROI Calculator",
           description:
-            "Estimate your potential revenue gains by improving your website’s speed, UI/UX, and SEO. Our calculator is backed by research from Google, Akamai, Forrester, and eConsultancy.",
+            "Calculate the ROI of a custom-coded e-commerce store by inputting your current performance metrics and revenue. Leverage data from Google, Akamai, Forrester, and eConsultancy.",
           provider: { "@type": "Organization", name: "HARTECHO" },
           audience: {
             "@type": "BusinessAudience",
@@ -248,15 +383,13 @@ useHead({
           category: "Business Services",
           serviceType: "E-Commerce Optimization & Performance Analysis",
         },
-
         potentialAction: {
           "@type": "Action",
           target: "https://www.hartecho.com/calc",
           name: "Calculate Your E-Commerce ROI",
           description:
-            "Enter your current monthly revenue, page speed, and ongoing costs to see how much more you could be making with a high-performance e-commerce store.",
+            "Enter your current metrics to see how a faster, custom-coded e-commerce store could boost your revenue.",
         },
-
         image: ["https://www.hartecho.com/HARTECHOLogo.webp"],
         about: {
           "@type": "Thing",
@@ -267,7 +400,6 @@ useHead({
             "Conversion Rate Optimization",
           ],
         },
-
         breadcrumb: {
           "@type": "BreadcrumbList",
           itemListElement: [
@@ -289,67 +421,12 @@ useHead({
     },
   ],
 });
-
-// Compute extra seconds above the target speed
-const extraSeconds = computed(() => {
-  return currentSpeed.value > targetSpeed
-    ? currentSpeed.value - targetSpeed
-    : 0;
-});
-
-// Speed multiplier: each extra second adds 7% potential improvement (if recovered)
-const speedMultiplier = computed(() => {
-  return 1 + extraSeconds.value * speedLossFactor;
-});
-
-// UI/UX & SEO multiplier: flat 10% boost
-const uiUxSeoMultiplier = computed(() => {
-  return 1 + uiUxSeoBonus;
-});
-
-// Total multiplier: product of Speed and UI/UX multipliers
-const totalMultiplier = computed(() => {
-  return speedMultiplier.value * uiUxSeoMultiplier.value;
-});
-
-// Revenue increase from speed improvements only
-const speedRevenueIncrease = computed(() => {
-  return currentRevenue.value * (speedMultiplier.value - 1);
-});
-
-// Revenue increase from UI/UX & SEO improvements only
-const uiUxSeoRevenueIncrease = computed(() => {
-  return currentRevenue.value * (uiUxSeoMultiplier.value - 1);
-});
-
-// Estimated total monthly revenue after improvements
-const estimatedRevenue = computed(() => {
-  return currentRevenue.value * totalMultiplier.value;
-});
-
-// Extra monthly revenue (the difference between estimated and current revenue)
-const extraRevenue = computed(() => {
-  return estimatedRevenue.value - currentRevenue.value;
-});
-
-// Net extra revenue after subtracting ongoing monthly costs
-const netExtraRevenue = computed(() => {
-  return extraRevenue.value - ongoingCosts.value;
-});
-
-// Estimated payback period for a $20,000 one-time investment (in months)
-const paybackPeriod = computed(() => {
-  return netExtraRevenue.value > 0 ? 20000 / netExtraRevenue.value : Infinity;
-});
-
-const emit = defineEmits(["hide-loading"]);
-emit("hide-loading");
 </script>
-  
-  <style scoped>
+
+<style scoped>
 /* CSS Variables for consistent color palette */
 :root {
-  --primary-color: #2c74b3; /* A trustworthy blue */
+  --primary-color: #2c74b3;
   --secondary-color: #555;
   --background-light: #f8f8f8;
   --card-background: #fff;
@@ -363,7 +440,7 @@ emit("hide-loading");
   max-width: 1200px;
   margin: 5rem auto;
   padding: 1em;
-  font-family: "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
+  font-family: var(--font-family);
   color: var(--secondary-color);
 }
 
@@ -456,7 +533,7 @@ emit("hide-loading");
   justify-content: space-between;
 }
 
-/* Calculation Details Section (Full Width) */
+/* Calculation Details & Sources Section */
 .calculation-details {
   width: 100%;
   background: var(--details-background);
@@ -478,7 +555,6 @@ emit("hide-loading");
   font-size: 1em;
 }
 
-/* Disclaimer styling */
 .disclaimer {
   font-size: 0.9em;
   font-style: italic;
@@ -486,5 +562,27 @@ emit("hide-loading");
   text-align: center;
   margin-top: 1.5em;
 }
+
+.sources {
+  max-width: 700px;
+  margin: 1em auto;
+  font-size: 0.9em;
+}
+
+.sources ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sources li {
+  margin: 0.5em 0;
+}
+
+.sources a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
+.sources a:hover {
+  text-decoration: underline;
+}
 </style>
-  
