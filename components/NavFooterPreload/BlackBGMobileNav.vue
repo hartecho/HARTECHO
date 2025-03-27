@@ -52,6 +52,7 @@ function getRoute(link) {
 .mobile-nav-buttons {
   display: none;
   z-index: 2000;
+  font-family: "Source Sans Pro", sans-serif;
 }
 
 .ex {
@@ -100,8 +101,8 @@ function getRoute(link) {
   }
 
   .ex {
-    height: 2rem;
-    width: 2rem;
+    max-height: 1.5rem;
+    max-width: 1.5rem;
     position: absolute;
     object-fit: cover;
     right: 30px;
@@ -110,7 +111,7 @@ function getRoute(link) {
 
   .ex img {
     height: auto;
-    width: 100%;
+    max-width: 100%;
   }
 }
 

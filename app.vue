@@ -6,11 +6,24 @@
         <NuxtPage @hide-loading="hideLoadingScreen" />
       </div>
 
-      <!-- Loading popup controlled by isLoading -->
-      <div v-if="isLoading" class="loading-popup">
-        <div class="loading-spinner"></div>
-        <p>Loading, please wait...</p>
-      </div>
+      <!-- Loading overlay with transition -->
+      <transition name="fade">
+        <div v-if="isLoading" class="loading-popup">
+          <div class="loading-content">
+            <!-- Wave Loader: a row of multicolored dots moving up and down -->
+            <div class="wave-loader">
+              <span class="dot" style="background-color: #ff5733"></span>
+              <span class="dot" style="background-color: #ffc300"></span>
+              <span class="dot" style="background-color: #daf7a6"></span>
+              <span class="dot" style="background-color: #33ff57"></span>
+              <span class="dot" style="background-color: #33fff6"></span>
+              <span class="dot" style="background-color: #335bff"></span>
+              <span class="dot" style="background-color: #8c33ff"></span>
+            </div>
+            <p>Loading, please wait...</p>
+          </div>
+        </div>
+      </transition>
     </NuxtLayout>
   </div>
 </template>
@@ -21,7 +34,7 @@ const showMobileNav = ref(false);
 useHead({
   link: [{ rel: "icon", type: "image/x-icon", href: "/HARTECHOLogo.webp" }],
   htmlAttrs: {
-    lang: "en", // Change 'en' to your desired language code
+    lang: "en",
   },
 });
 
@@ -33,15 +46,15 @@ function showLoadingScreen() {
   isLoading.value = true;
 }
 
-// Function to hide the loading screen, can be triggered from any page
+// Function to hide the loading screen
 function hideLoadingScreen() {
   isLoading.value = false;
 }
 
-// Provide the showLoadingScreen function so that child components (pages) can use it
+// Provide the showLoadingScreen function so child pages can call it
 provide("showLoadingScreen", showLoadingScreen);
 
-// Handle route changes to initially show the loading screen
+// Show loading screen on route change
 router.beforeEach((to, from, next) => {
   showLoadingScreen();
   next();
@@ -49,13 +62,6 @@ router.beforeEach((to, from, next) => {
 
 onMounted(() => {
   window.addEventListener("scroll", revealElementsOnScroll);
-  // const metaDescription = document.querySelector('meta[name="description"]');
-  // if (metaDescription) {
-  //   console.log("Meta description length:");
-  //   console.log(metaDescription.getAttribute("content").length);
-  // } else {
-  //   console.log("Meta description not found.");
-  // }
 });
 
 onUnmounted(() => {
@@ -63,26 +69,36 @@ onUnmounted(() => {
 });
 
 function revealElementsOnScroll() {
-  var grows = document.querySelectorAll(".divider-grow");
-  for (var i = 0; i < grows.length; i++) {
-    var windowHeight = window.innerHeight;
-    var elementTop = grows[i].getBoundingClientRect().top;
-    var elementVisible = 200;
+  const grows = document.querySelectorAll(".divider-grow");
+  const windowHeight = window.innerHeight;
+  const elementVisible = 200;
+  grows.forEach((el) => {
+    const elementTop = el.getBoundingClientRect().top;
     if (elementTop < windowHeight - elementVisible) {
-      grows[i].classList.add("active");
+      el.classList.add("active");
     } else {
-      grows[i].classList.remove("active");
+      el.classList.remove("active");
     }
-  }
+  });
 }
 
 watch(showMobileNav, (value) => {
-  document.body.style.overflow = value ? "hidden" : ""; // Stops scrolling when mobile nav is open
+  document.body.style.overflow = value ? "hidden" : "";
 });
 </script>
 
-<style scoped media="screen">
-/* Loading popup styling */
+<style scoped>
+/* Fade transition for the overlay */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* Loading overlay styles */
 .loading-popup {
   position: fixed;
   top: 0;
@@ -92,30 +108,66 @@ watch(showMobileNav, (value) => {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.85); /* Dark overlay */
   color: white;
   z-index: 20;
   flex-direction: column;
-  transition: opacity 0.5s ease;
-  opacity: 1;
+  overflow: hidden;
 }
 
-.loading-spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
+.loading-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Wave Loader styling */
+.wave-loader {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  margin-bottom: 15px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  border-top: 4px solid white;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin-bottom: 10px;
+  margin: 0 4px;
+  animation: wave 1.2s ease-in-out infinite;
 }
 
-@keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
+/* Stagger the animation of each dot */
+.dot:nth-child(1) {
+  animation-delay: 0s;
+}
+.dot:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.dot:nth-child(3) {
+  animation-delay: 0.2s;
+}
+.dot:nth-child(4) {
+  animation-delay: 0.3s;
+}
+.dot:nth-child(5) {
+  animation-delay: 0.4s;
+}
+.dot:nth-child(6) {
+  animation-delay: 0.5s;
+}
+.dot:nth-child(7) {
+  animation-delay: 0.6s;
+}
+
+/* Keyframes for the vertical wave effect */
+@keyframes wave {
+  0%,
   100% {
-    transform: rotate(360deg);
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
   }
 }
 </style>
@@ -137,7 +189,7 @@ a:active {
   background: none;
   color: inherit;
   box-shadow: none;
-  -webkit-tap-highlight-color: transparent; /* Removes tap highlight color in mobile browsers */
+  -webkit-tap-highlight-color: transparent;
 }
 
 p {

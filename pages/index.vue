@@ -136,6 +136,9 @@ onMounted(() => {
     if (animationFrameId) cancelAnimationFrame(animationFrameId);
   });
 });
+
+const emit = defineEmits(["hide-loading"]);
+emit("hide-loading");
 </script>
 
   

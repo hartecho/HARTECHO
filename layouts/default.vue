@@ -1,10 +1,10 @@
 <template>
   <div>
     <!-- Typewriter preloader remains the same -->
-    <NavFooterPreloadTypewriterPreloader
+    <!-- <NavFooterPreloadTypewriterPreloader
       vidPath="BlueHeartVideo2Comp.mp4"
       text="HARTECHO"
-    />
+    /> -->
 
     <!-- Conditional Navigation Rendering -->
     <template v-if="route.path.startsWith('/forms')">
@@ -40,7 +40,7 @@
       <slot />
     </div>
 
-    <SubcomponentsBookedPopup />
+    <!-- <SubcomponentsBookedPopup /> -->
 
     <footer class="footer">
       <template
