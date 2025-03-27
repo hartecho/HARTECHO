@@ -66,7 +66,7 @@ function scrollDown() {
 
 <style scoped>
 .intro-section {
-  min-height: 110vh;
+  min-height: 80vh;
   background-size: cover;
   background-position: bottom;
   display: flex;
@@ -77,38 +77,13 @@ function scrollDown() {
   padding: 1rem;
 }
 
-.background-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.5) 0%,
-    rgba(0, 0, 0, 1) 90%,
-    rgba(0, 0, 0, 1) 100%
-  );
-  z-index: 1;
-}
-
-.spark-canvas {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 2;
-  pointer-events: none;
-}
-
 .content-wrapper {
   max-width: 1200px;
   padding: 0 20px;
   z-index: 3;
   position: relative;
   color: white;
-  margin-top: -10rem;
+  margin-top: 5rem;
 }
 
 .title {
@@ -140,7 +115,7 @@ function scrollDown() {
 
 .button-group {
   display: flex;
-  gap: 20px;
+  gap: 1rem;
   justify-content: center;
   margin-top: 35px;
   flex-wrap: wrap;
@@ -187,37 +162,22 @@ function scrollDown() {
   }
 }
 
-@media (max-width: 768px) {
-  .title {
-    font-size: 1.8rem;
-  }
-  .subtitle {
-    font-size: 0.95rem;
-    margin-bottom: 1rem;
-  }
-  .logo-icon {
-    width: 100px;
-  }
-  .button-group {
-    margin-top: 1rem;
-  }
-}
-
 @media (max-width: 480px) {
   .content-wrapper {
     padding: 0;
   }
-  .title {
-    font-size: 1.5rem;
-  }
+
   .subtitle {
-    font-size: 0.85rem;
+    margin-bottom: 1rem;
   }
-  .btn {
-    font-size: 1rem;
-  }
+
   .button-group {
-    gap: 10px;
+    margin-top: 1rem;
+  }
+
+  .btn {
+    width: 100%;
+    font-size: 1rem;
   }
 }
 </style>

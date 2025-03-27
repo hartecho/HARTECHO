@@ -36,7 +36,7 @@
   flex-direction: column;
   align-items: center;
   padding: 20px 10px;
-  margin: 4rem 0;
+  margin: 4rem 0 2rem 0;
   /* background: transparent; */
   position: relative;
 }

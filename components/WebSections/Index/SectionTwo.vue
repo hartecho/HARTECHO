@@ -103,7 +103,6 @@ const handleGetNewStore = (event) => {
 .title {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 3rem;
-  line-height: 3.3rem;
   font-weight: 600;
   margin-bottom: 1rem;
 }
@@ -112,7 +111,6 @@ const handleGetNewStore = (event) => {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 1.2rem;
   color: white;
-  line-height: 1.5;
 }
 
 .first {
@@ -164,7 +162,7 @@ const handleGetNewStore = (event) => {
 
 .image-container {
   z-index: 2;
-  padding: 2rem 0;
+  padding: 0;
   flex: 1;
 }
 
@@ -180,26 +178,24 @@ const handleGetNewStore = (event) => {
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 0rem;
   }
 
   .button-group {
     justify-content: center;
   }
+
+  .image-container {
+    order: 2;
+  }
 }
 
-@media (max-width: 768px) {
-  /* .title {
-    font-size: 2rem;
+@media (max-width: 992px) {
+  .title {
+    font-size: 2.2rem;
   }
-
   .subtitle {
     font-size: 1rem;
   }
-
-  .image-container {
-    max-width: 90%;
-  } */
 }
 
 @media (max-width: 480px) {
@@ -211,15 +207,6 @@ const handleGetNewStore = (event) => {
     padding: 1rem;
   }
 
-  .title {
-    font-size: 1.5rem;
-    line-height: 1.8rem;
-  }
-
-  .subtitle {
-    font-size: 0.9rem;
-  }
-
   .button-group {
     flex-direction: column;
     justify-content: center;
@@ -228,12 +215,15 @@ const handleGetNewStore = (event) => {
 
   .btn {
     font-size: 1rem;
+    width: 100%;
   }
 
   .image-container {
     max-width: 100%;
-    padding: 0;
-    margin-bottom: 0rem;
+    min-width: 100%;
+  }
+  img {
+    min-width: 100%;
   }
 }
 </style>

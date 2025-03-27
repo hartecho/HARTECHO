@@ -414,13 +414,12 @@ form {
     gap: 5rem;
     margin-top: 3rem;
   }
+  .office-footer {
+    margin-top: 0;
+  }
 }
 
 @media (max-width: 768px) {
-  .office-footer {
-    margin-top: 5rem;
-  }
-
   .top-nav {
     padding: 0.75rem 1.5rem;
   }

@@ -157,6 +157,6 @@ onMounted(() => {
   pointer-events: none;
 }
 .steps {
-  margin-top: -12rem;
+  margin-top: 4rem;
 }
 </style>

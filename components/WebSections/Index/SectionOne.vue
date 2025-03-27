@@ -117,7 +117,7 @@ const handleTestSpeed = (event) => {
 .title {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 3rem;
-  line-height: 3.3rem;
+  /* line-height: 3.3rem; */
   font-weight: 600;
   margin-bottom: 1rem;
 }
@@ -127,7 +127,7 @@ const handleTestSpeed = (event) => {
   font-size: 1.2rem;
   color: white;
   margin-bottom: 2rem;
-  line-height: 1.5;
+  /* line-height: 1.5; */
 }
 
 .button-group {
@@ -171,12 +171,12 @@ const handleTestSpeed = (event) => {
 
 .image-container {
   z-index: 2;
-  padding: 2rem 0;
+  padding: 0;
   flex: 1;
 }
 
 .image-container img {
-  width: 90%;
+  width: 100%;
   height: auto;
 }
 
@@ -187,7 +187,7 @@ const handleTestSpeed = (event) => {
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 1rem;
+    gap: 4rem;
   }
 
   .image-container {
@@ -211,24 +211,18 @@ const handleTestSpeed = (event) => {
   }
 }
 
-@media (max-width: 768px) {
-  /* .title {
-    font-size: 2rem;
+@media (max-width: 992px) {
+  .title {
+    font-size: 2.2rem;
   }
-
   .subtitle {
     font-size: 1rem;
   }
-
-  .image-container {
-    max-width: 90%;
-  } */
 }
 
 @media (max-width: 480px) {
   .content-wrapper {
     padding: 0;
-    margin-bottom: 4rem;
   }
 
   .speed-section {
@@ -236,8 +230,8 @@ const handleTestSpeed = (event) => {
   }
 
   .title {
-    font-size: 1.5rem;
-    line-height: 1.8rem;
+    font-size: 2.2rem;
+    /* line-height: 1.8rem; */
   }
 
   .subtitle {
@@ -252,11 +246,15 @@ const handleTestSpeed = (event) => {
 
   .btn {
     font-size: 1rem;
+    width: 100%;
   }
 
   .image-container {
     max-width: 100%;
-    padding: 0;
+    min-width: 100%;
+  }
+  img {
+    min-width: 100%;
   }
 }
 </style>

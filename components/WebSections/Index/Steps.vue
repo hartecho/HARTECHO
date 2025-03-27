@@ -61,7 +61,7 @@
 .services-section {
   display: flex;
   gap: 2rem;
-  padding: 0rem 2rem 6rem 2rem;
+  padding: 0rem 2rem 4rem 2rem;
   background: transparent;
   color: white;
   justify-content: center;
@@ -112,7 +112,7 @@ p {
 @media (max-width: 1024px) {
   .services-section {
     gap: 1.5rem;
-    padding: 0 1rem 4rem 1rem;
+    padding: 0 1rem;
   }
 
   .service-card {
@@ -144,14 +144,6 @@ p {
   .icon {
     justify-content: center;
   }
-
-  h2 {
-    font-size: 1.2rem;
-  }
-
-  p {
-    font-size: 0.9rem;
-  }
 }
 
 @media (max-width: 480px) {
@@ -164,20 +156,14 @@ p {
     flex: 0 1 100%;
     padding: 1rem;
     text-align: center;
+    width: 100%;
+    max-width: none;
   }
 
   img {
     height: 2.5rem;
     width: 2.5rem;
     margin-bottom: 2rem;
-  }
-
-  h2 {
-    font-size: 1.1rem;
-  }
-
-  p {
-    font-size: 0.85rem;
   }
 }
 </style>

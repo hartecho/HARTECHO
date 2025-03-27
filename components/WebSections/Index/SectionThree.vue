@@ -7,7 +7,7 @@
         <h2 class="title">
           How to Break Free from E-Commerce Platform Limitations
         </h2>
-        <p class="description">
+        <p class="subtitle">
           Tired of being constrained by the restrictions of platforms like
           Shopify? A custom-coded e-commerce store gives you unparalleled
           freedom to design, operate, and grow your business on your terms.
@@ -160,16 +160,14 @@ const handleGetNewStore = (event) => {
 .title {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 3rem;
-  line-height: 3.3rem;
   font-weight: 600;
   margin-bottom: 1rem;
 }
 
-.description {
+.subtitle {
   font-family: "Source Sans Pro", sans-serif;
   font-size: 1.2rem;
   color: white;
-  line-height: 1.5;
   margin-bottom: 2rem;
 }
 
@@ -254,7 +252,6 @@ const handleGetNewStore = (event) => {
   }
 
   .benefits-wrapper {
-    order: -1; /* Moves benefits-wrapper before content-wrapper at this breakpoint */
     align-items: center;
   }
 
@@ -267,22 +264,17 @@ const handleGetNewStore = (event) => {
   .button-group {
     justify-content: center;
   }
+  .support-section {
+    padding: 4rem 1rem;
+  }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 992px) {
   .title {
-    font-size: 2rem;
-    line-height: 2.2rem;
+    font-size: 2.2rem;
   }
-
-  .description {
+  .subtitle {
     font-size: 1rem;
-  }
-
-  .benefit-icon {
-    margin-top: 0;
-    width: 64px;
-    height: 64px;
   }
 }
 
@@ -291,21 +283,9 @@ const handleGetNewStore = (event) => {
     padding: 0;
   }
 
-  .support-section {
-    padding: 4rem 1rem;
-  }
-
-  .title {
-    font-size: 1.5rem;
-    line-height: 1.8rem;
-  }
-
-  .description {
-    font-size: 0.9rem;
-  }
-
-  .benefit-detail {
-    font-size: 0.9rem;
+  .btn {
+    font-size: 1rem;
+    width: 100%;
   }
 }
 </style>
