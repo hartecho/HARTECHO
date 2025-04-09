@@ -2,7 +2,7 @@
   <div class="testimonial">
     <div class="testimonial-header">
       <img
-        src="/FullStar.svg"
+        src="/Graphics/FullStar.svg"
         alt="Full Star"
         class="star-icon"
         v-for="i in 5"
@@ -16,7 +16,7 @@
         <h4>{{ name }}</h4>
         <p>{{ designation }}</p>
       </div>
-      <img src="/Quote.svg" alt="Quote Icon" class="quote-icon" />
+      <img src="/Graphics/Quote.svg" alt="Quote Icon" class="quote-icon" />
     </div>
   </div>
 </template>
@@ -52,6 +52,7 @@ const props = defineProps({
   flex-direction: column;
   min-height: 18rem;
   justify-content: space-between;
+  width: 100%;
 }
 
 .testimonial-header {
