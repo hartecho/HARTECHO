@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     '/terms': { prerender: true },
     '/privacy': { prerender: true },
     '/calc': { prerender: true },
+    '/hw': { prerender: true },
     // Blog posts page generated on demand, revalidates in background, cached on CDN for 1 hour (3600 seconds)
     '/blog': { ssr: true },
     // Blog post page generated on demand once until next deployment, cached on CDN
