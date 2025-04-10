@@ -38,12 +38,6 @@ const successMessage = ref("");
 const errorMessage = ref("");
 const isSubmitting = ref(false);
 
-// Check if running on localhost to exclude Meta Pixel tracking
-const isLocalhost = () =>
-  process.client &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
 // Clear messages after 5 seconds
 const clearMessages = () => {
   setTimeout(() => {
@@ -82,12 +76,10 @@ const submitEmail = async () => {
     });
 
     // Track the "Lead" event with Meta Pixel (if not on localhost)
-    if (!isLocalhost()) {
-      $fbq("track", "Lead", {
-        content_name: "E-commerce Store Waitlist Signup",
-        email: email.value,
-      });
-    }
+    $fbq("track", "Lead", {
+      content_name: "E-commerce Store Waitlist Signup",
+      email: email.value,
+    });
 
     // Subscribe the user to the waitlist using Klaviyo's client API
     await $klaviyoClientApi.subscribe(

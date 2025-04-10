@@ -23,18 +23,11 @@ const props = defineProps({
 
 const emit = defineEmits(["toggleMobileNav"]);
 
-// Check if running on localhost to exclude tracking
-const isLocalhost = () =>
-  process.client &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
 // Function to handle "Free SEO Guide" click with pixel tracking and mobile nav toggle
 const handleFreeSEOGuideClick = (event) => {
   const { $fbq } = useNuxtApp();
-  if (!isLocalhost()) {
-    $fbq("track", "Lead", { content_name: "Free SEO Guide" });
-  }
+  $fbq("track", "Lead", { content_name: "Free SEO Guide" });
+
   // Emit toggleMobileNav to close the mobile menu (matches other links' behavior)
   emit("toggleMobileNav");
 };

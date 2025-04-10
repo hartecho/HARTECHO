@@ -83,12 +83,6 @@ const successMessage = ref("");
 const errorMessage = ref("");
 const isSubmitting = ref(false);
 
-// Check if running on localhost to exclude Meta Pixel tracking
-const isLocalhost = () =>
-  process.client &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
 // Clear messages after a timeout
 const clearMessages = () => {
   setTimeout(() => {
@@ -100,17 +94,13 @@ const clearMessages = () => {
 // Function to handle "Free SEO Guide" click with Meta Pixel tracking
 const handleFreeSEOGuideClick = (event) => {
   const { $fbq } = useNuxtApp();
-  if (!isLocalhost()) {
-    $fbq("track", "Lead", { content_name: "Free SEO Guide" });
-  }
+  $fbq("track", "Lead", { content_name: "Free SEO Guide" });
 };
 
 // Function to handle "Book a Call" click with Meta Pixel tracking
 const handleBookCallClick = (event) => {
   const { $fbq } = useNuxtApp();
-  if (!isLocalhost()) {
-    $fbq("track", "Lead", { content_name: "Book a Call" });
-  }
+  $fbq("track", "Lead", { content_name: "Book a Call" });
 };
 
 // Function to handle email submission with Klaviyo and Meta Pixel tracking
@@ -144,13 +134,10 @@ const handleEmailSubmit = async () => {
       email: email.value,
     });
 
-    // Track the "Lead" event with Meta Pixel
-    if (!isLocalhost()) {
-      $fbq("track", "Lead", {
-        content_name: "E-commerce Store Waitlist Signup",
-        email: email.value,
-      });
-    }
+    $fbq("track", "Lead", {
+      content_name: "E-commerce Store Waitlist Signup",
+      email: email.value,
+    });
 
     // Subscribe the user to the waitlist
     await $klaviyoClientApi.subscribe(

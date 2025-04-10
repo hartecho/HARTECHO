@@ -56,18 +56,13 @@ let props = defineProps({
   navBarsButtonPath: String,
 });
 
-// Check if running on localhost to exclude tracking
-const isLocalhost = () =>
-  process.client &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
 // Function to handle "Free SEO Guide" click with pixel tracking
 const handleFreeSEOGuideClick = (event) => {
   const { $fbq } = useNuxtApp();
-  if (!isLocalhost()) {
-    $fbq("track", "Lead", { content_name: "Free SEO Guide" });
-  }
+
+  console.log("Tracking lead for");
+  $fbq("track", "Lead", { content_name: "Free SEO Guide" });
+
   // Navigation happens automatically via NuxtLink
 };
 

@@ -53,18 +53,10 @@
 <script setup>
 import { useNuxtApp } from "#app";
 
-// Check if running on localhost to exclude tracking
-const isLocalhost = () =>
-  process.client &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
 // Function to handle SEO guide download with pixel tracking
 const handleDownloadSEOGuide = (event) => {
   const { $fbq } = useNuxtApp();
-  if (!isLocalhost()) {
-    $fbq("track", "Lead", { content_name: "SEO Guide Download" });
-  }
+  $fbq("track", "Lead", { content_name: "SEO Guide Download" });
   // Download proceeds automatically via the 'download' attribute
 };
 </script>

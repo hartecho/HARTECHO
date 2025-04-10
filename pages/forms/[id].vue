@@ -487,11 +487,6 @@ function toggleAnswer(answer) {
   }
 }
 
-const isLocalhost = () =>
-  process.client &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
 /**
  * Validate the answer and then either submit the final form or save partial progress.
  */
@@ -502,12 +497,10 @@ async function validateAndNext() {
   // Save current answer locally
   storeCurrentAnswer();
 
-  if (!isLocalhost()) {
-    const { $fbq } = useNuxtApp();
-    $fbq("trackCustom", "FormStepCompleted", {
-      step: currentQuestionIndex.value + 1,
-    });
-  }
+  const { $fbq } = useNuxtApp();
+  $fbq("trackCustom", "FormStepCompleted", {
+    step: currentQuestionIndex.value + 1,
+  });
 
   const isLastQuestion =
     currentQuestionIndex.value === form.value.questions.length - 1;
@@ -517,10 +510,8 @@ async function validateAndNext() {
     loading.value = true;
     try {
       await submitResponses("Completed");
-      if (!isLocalhost()) {
-        const { $fbq } = useNuxtApp();
-        $fbq("track", "Lead", { content_name: "Form Submission" });
-      }
+      const { $fbq } = useNuxtApp();
+      $fbq("track", "Lead", { content_name: "Form Submission" });
       nextQuestion(); // triggers final redirect
     } catch (error) {
       console.error("Final submission error:", error);

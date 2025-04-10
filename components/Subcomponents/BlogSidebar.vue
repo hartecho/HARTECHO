@@ -29,21 +29,13 @@ import { useNuxtApp } from "#app";
 // Fetch data during build
 const { data: otherPosts } = await useFetch("/api/blogs/popular");
 
-// Check if running on localhost to exclude tracking
-const isLocalhost = () =>
-  process.client &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
 // Function to handle blog post click with pixel tracking
 const handleBlogClick = (title) => {
   const { $fbq } = useNuxtApp();
-  if (!isLocalhost()) {
-    $fbq("track", "ViewContent", {
-      content_name: title,
-      content_category: "Blog",
-    });
-  }
+  $fbq("track", "ViewContent", {
+    content_name: title,
+    content_category: "Blog",
+  });
   // Navigation happens automatically via NuxtLink
 };
 

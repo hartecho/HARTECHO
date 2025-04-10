@@ -91,18 +91,10 @@
 <script setup>
 import { useNuxtApp } from "#app";
 
-// Check if running on localhost to exclude tracking
-const isLocalhost = () =>
-  process.client &&
-  (window.location.hostname === "localhost" ||
-    window.location.hostname === "127.0.0.1");
-
 // Function to handle "Get My New Store" click with pixel tracking
 const handleGetNewStore = (event) => {
   const { $fbq } = useNuxtApp();
-  if (!isLocalhost()) {
-    $fbq("track", "Lead", { content_name: "Get My New Store" });
-  }
+  $fbq("track", "Lead", { content_name: "Get My New Store" });
   // Navigation happens automatically via NuxtLink
 };
 </script>
