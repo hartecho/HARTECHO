@@ -988,4 +988,13 @@ emit("hide-loading");
     justify-content: center;
   }
 }
+
+@media (max-width: 768px) {
+  .question-header {
+    margin-bottom: 0;
+  }
+  .survey-container {
+    padding-bottom: 3rem;
+  }
+}
 </style>

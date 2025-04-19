@@ -137,6 +137,25 @@ onMounted(() => {
   });
 });
 
+// SEO & Head meta configuration for HARTECHO Home Page
+useSeoMeta({
+  title: "Custom-Coded E-Commerce Stores || HARTECHO",
+  description:
+    "HARTECHO builds lightning-fast, SEO-optimized e-commerce stores. Custom-coded solutions designed to increase traffic, improve UX, and maximize revenue.",
+  ogTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
+  ogDescription:
+    "HARTECHO builds lightning-fast, SEO-optimized e-commerce stores. Custom-coded solutions designed to increase traffic, improve UX, and maximize revenue.",
+  ogImage: "https://hartecho.com/HARTECHOLogo.webp",
+  ogUrl: "https://hartecho.com",
+  ogType: "website",
+  twitterTitle: "Custom-Coded E-Commerce Stores || HARTECHO",
+  twitterDescription:
+    "HARTECHO builds lightning-fast, SEO-optimized e-commerce stores. Custom-coded solutions designed to increase traffic, improve UX, and maximize revenue.",
+  twitterImage: "https://hartecho.com/HARTECHOLogo.webp",
+  twitterCard: "summary_large_image",
+  pinterestRichPin: "true",
+});
+
 const emit = defineEmits(["hide-loading"]);
 emit("hide-loading");
 </script>

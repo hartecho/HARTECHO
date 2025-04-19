@@ -246,7 +246,7 @@ img {
   }
 
   .main-video {
-    box-shadow: 10px 10px 10px rgba(0, 0, 0, 1);
+    box-shadow: none;
   }
 
   .video-container {
