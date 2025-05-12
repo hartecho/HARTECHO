@@ -1,75 +1,64 @@
-# Nuxt 3 Minimal Starter
+# HARTECHO Official Website
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+**Live demo:** https://www.hartecho.com
 
-## Setup
+## Overview
 
-Make sure to install the dependencies:
+The HARTECHO site is the public face of HARTECHO LLC—a boutique digital marketing and web development agency. It showcases our full‑stack expertise, from SEO‑optimized server‑side rendering to secure API routes and automated deployments.
 
-```bash
-# npm
-npm install
+## Tech Stack
 
-# pnpm
-pnpm install
+- **Frontend:** Nuxt 3 (Vue 3 with SSR), Pinia  
+- **Backend:** Node.js, Nuxt Server Routes, Mongoose, MongoDB Atlas  
+- **DevOps & Deployment:** Vercel (CI/CD), GitHub  
 
-# yarn
-yarn install
+## Key Features
 
-# bun
-bun install
-```
+- **Server‑side rendering** for fast load times and SEO  
+- **Modular components** with auto‑imports  
+- **JSON‑LD metadata** for rich search results  
+- **WCAG‑compliant** mobile‑first design  
+- **Secure contact form** and API endpoints  
+- **Automatic deployment** on push to `main`  
 
-## Development Server
+## Getting Started
 
-Start the development server on `http://localhost:3000`:
+### Prerequisites
 
-```bash
-# npm
-npm run dev
+- Node.js v16 or higher  
+- npm, yarn, or pnpm  
+- MongoDB Atlas connection string  
 
-# pnpm
-pnpm run dev
+### Installation & Running Locally
 
-# yarn
-yarn dev
+    git clone https://github.com/hartecho/hartecho-website.git
+    cd hartecho-website
+    npm install
 
-# bun
-bun run dev
-```
+Create a `.env` file in the project root with:
 
-## Production
+    MONGODB_URI=your_mongodb_connection_string
+    NUXT_PUBLIC_SITE_URL=https://www.hartecho.com
 
-Build the application for production:
+Start the development server:
 
-```bash
-# npm
-npm run build
+    npm run dev
 
-# pnpm
-pnpm run build
+### Build & Production
 
-# yarn
-yarn build
+    npm run build
+    npm run start
 
-# bun
-bun run build
-```
+## Deployment
 
-Locally preview production build:
+This repository is connected to Vercel. Any push to the `main` branch triggers the CI/CD pipeline and publishes the latest version at https://www.hartecho.com.
 
-```bash
-# npm
-npm run preview
+## License
 
-# pnpm
-pnpm run preview
+© 2025 HARTECHO LLC. All rights reserved.
 
-# yarn
-yarn preview
+## Contact
 
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+Thomas Hart  
+Email: thomas@hartecho.com  
+Website: https://www.hartecho.com  
