@@ -4,7 +4,7 @@
 
 ## Overview
 
-The HARTECHO site is the public face of HARTECHO LLC—a boutique digital marketing and web development agency. It demonstrates our full‑stack expertise, from SEO‑optimized server‑side rendering to secure API routes, marketing integrations (Meta Pixel + Conversions API, Klaviyo), and automated deployments.
+The HARTECHO website showcases our expertise in building custom e‑commerce stores designed to improve conversions for online retailers. By leveraging Nuxt 3’s server‑side rendering, we deliver maximum speed optimization and SEO performance. Our bespoke UX/UI and tailored feature set ensure a seamless, high‑impact shopping experience that drives sales and growth.
 
 ## Tech Stack
 
@@ -18,8 +18,7 @@ The HARTECHO site is the public face of HARTECHO LLC—a boutique digital marke
 - **Server‑side rendering** for fast load times and SEO  
 - **Modular components** with auto‑imports  
 - **JSON‑LD metadata** for rich search results  
-- **WCAG‑compliant** mobile‑first design  
-- **Secure contact form** and API endpoints  
+- **WCAG‑compliant** responsive design  
 - **Meta Pixel & Conversions API** for tracking  
 - **Klaviyo** waitlist signup and email flows  
 - **Automatic deployment** on push to `main`  
