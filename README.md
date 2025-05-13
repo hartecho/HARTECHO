@@ -4,7 +4,7 @@
 
 ## Overview
 
-The HARTECHO website showcases our expertise in building custom e‑commerce stores designed to improve conversions for online retailers. By leveraging Nuxt 3’s server‑side rendering, we deliver maximum speed optimization and SEO performance. Our bespoke UX/UI and tailored feature set ensure a seamless, high‑impact shopping experience that drives sales and growth.
+The HARTECHO website showcases our expertise in building custom e‑commerce stores designed to improve conversions for online retailers. By leveraging Nuxt 3’s server‑side rendering, we deliver maximum speed optimization and SEO performance. Our bespoke UX/UI and tailored feature set ensure a seamless, high‑impact shopping experience that drives sales and growth. The site also includes a blog for sharing insights and an admin dashboard for managing products, orders, and user accounts.
 
 ## Tech Stack
 
@@ -21,6 +21,9 @@ The HARTECHO website showcases our expertise in building custom e‑commerce sto
 - **WCAG‑compliant** responsive design  
 - **Meta Pixel & Conversions API** for tracking  
 - **Klaviyo** waitlist signup and email flows  
+- **Blog** section with markdown‑based posts and SEO metadata  
+- **Admin dashboard** for:
+  - Blog creation and editing
 - **Automatic deployment** on push to `main`  
 
 ## Getting Started
